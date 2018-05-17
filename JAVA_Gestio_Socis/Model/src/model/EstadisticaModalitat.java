@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="estadistica_modalitat")
-public class EstadisticaModalitat {
+public class EstadisticaModalitat implements Serializable{
     
     @Id
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)

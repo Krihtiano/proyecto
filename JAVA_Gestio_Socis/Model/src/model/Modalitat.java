@@ -5,13 +5,14 @@
  */
 package model;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity    
-public class Modalitat {
+public class Modalitat implements Serializable{
     
     @Id
     private int id;

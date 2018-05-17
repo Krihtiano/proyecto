@@ -15,31 +15,23 @@ import java.lang.reflect.InvocationTargetException;
 public class BillarPersistence {
 
     
-    private BillarPersistence() {
-    }
-
-    static public IBillar getInstance(String nomClasse) {
-        return getInstance(nomClasse,null);
+    protected BillarPersistence() {
     }
     
-    static public IBillar getInstance(String nomClasse, String nomFitxerPropietats) {
-        IBillar obj;
-        if (nomClasse==null) {
-            throw new BillarException("Nom de la classe erroni. No pot ser null");
-        }
+    static public IBillar getInstance(String nomClasseComponent, String parametrePelConstructorDelComponent) throws BillarException {
+        IBillar obj = null;
         try {
-            if (nomFitxerPropietats == null) {
-                // S'invoca constructor sense paràmetres
-                obj = (IBillar) Class.forName(nomClasse).newInstance();
+            Class c = Class.forName(nomClasseComponent);
+            if (parametrePelConstructorDelComponent==null ||
+                    parametrePelConstructorDelComponent.length()==0) {
+                obj = (IBillar) c.newInstance();
             } else {
-                // S'invoca constructor amb 1 paràmetre
-                Class c = Class.forName(nomClasse);
                 Constructor co = c.getConstructor(String.class);
-                obj = (IBillar) co.newInstance(nomFitxerPropietats);
+                obj = (IBillar) co.newInstance(parametrePelConstructorDelComponent);
             }
-            return obj;
-        } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new BillarException("No es pot crear l'objecte de la classe " + nomClasse, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
+            throw new BillarException("Error " + nomClasseComponent, ex);
         }
+        return obj;
     }
 }

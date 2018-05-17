@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS soci (
   data_alta timestamp NOT NULL,
   password_hash varchar(32) NOT NULL,
   foto longblob,
-  actiu int(1) NOT NULL,
+  actiu tinyint NOT NULL,
   PRIMARY KEY (id)
 );
 

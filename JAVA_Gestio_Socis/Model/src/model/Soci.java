@@ -1,15 +1,18 @@
 
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Table;
 
 @Entity
-public class Soci {
+@Table(name="soci")
+public class Soci implements Serializable{
     
     @Id
     private int id;
@@ -43,26 +46,30 @@ public class Soci {
     
     @Column(name="actiu")
     private boolean actiu;
+    
+    protected Soci(){
+        
+    }
 
     public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, byte[] foto, boolean actiu) {
-        this.nif = nif;
-        this.nom = nom;
-        this.cognom1 = cognom1;
-        this.cognom2 = cognom2;
-        this.dataAlta = data_alta;
-        this.passwordHash = password_hash;
-        this.foto = foto;
-        this.actiu = actiu;
+        setNif(nif);
+        setNom(nom);
+        setCognom1(cognom1);
+        setCognom2(cognom2);
+        setDataAlta(data_alta);
+        setPasswordHash(password_hash);
+        setFoto(foto);
+        setActiu(actiu);
     }
 
     public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, boolean actiu) {
-        this.nif = nif;
-        this.nom = nom;
-        this.cognom1 = cognom1;
-        this.cognom2 = cognom2;
-        this.dataAlta = data_alta;
-        this.passwordHash = password_hash;
-        this.actiu = actiu;
+        setNif(nif);
+        setNom(nom);
+        setCognom1(cognom1);
+        setCognom2(cognom2);
+        setDataAlta(data_alta);
+        setPasswordHash(password_hash);
+        setActiu(actiu);
     }
 
     public int getId() {
@@ -105,16 +112,16 @@ public class Soci {
         return dataAlta;
     }
 
-    public void setData_alta(Date data_alta) {
-        this.dataAlta = data_alta;
+    public void setDataAlta(Date dataAlta) {
+        this.dataAlta = dataAlta;
     }
 
-    public String getPassword_hash() {
+    public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.passwordHash = password_hash;
+    public void setPasswordHash(String pw) {
+        this.passwordHash = pw;
     }
 
     public byte[] getFoto() {
@@ -132,4 +139,11 @@ public class Soci {
     public void setActiu(boolean actiu) {
         this.actiu = actiu;
     }
+
+    @Override
+    public String toString() {
+        return "Soci{" + "id=" + id + ", nif=" + nif + ", nom=" + nom + ", cognom1=" + cognom1 + ", cognom2=" + cognom2 + ", dataAlta=" + dataAlta + ", passwordHash=" + passwordHash + ", foto=" + foto + ", actiu=" + actiu + '}';
+    }
+    
+    
 }
