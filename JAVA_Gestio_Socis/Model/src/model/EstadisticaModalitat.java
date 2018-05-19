@@ -43,7 +43,8 @@ public class EstadisticaModalitat implements Serializable{
     @Column(nullable = false, name = "total_entrades_temporada_actual")
     private int totalEntradesTemporadaActual;
 
-    
+    protected EstadisticaModalitat() {
+    }
     
     public Soci getSoci() {
         return soci;

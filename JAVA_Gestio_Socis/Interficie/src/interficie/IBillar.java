@@ -7,6 +7,7 @@ package interficie;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.Modalitat;
 import model.Soci;
 
 /**
@@ -26,8 +27,18 @@ public interface IBillar {
      */
     void closeTransaction (char typeClose) throws BillarException;
     
+    //Retorna tots els socis
     public ArrayList<Soci> getSocis();
     
+    //Retorna només els socis actius (que no han sigut esborrats de la bd
+    public ArrayList<Soci> getSocisValids();
+    
+    //Afegir un soci.
     public void addSoci(Soci s);
     
+    //Posa un soci a actiu = 0; per a que no es mostri mes com a un soci, pero poder guardar el registre a la bd.
+    public void removeSoci(int id);
+    
+    public ArrayList<Modalitat> getModalitats();
+
 }

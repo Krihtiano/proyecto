@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 public class Soci implements Serializable{
     
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     
     @Basic(optional=false)
@@ -45,13 +48,13 @@ public class Soci implements Serializable{
     private byte[] foto;
     
     @Column(name="actiu")
-    private boolean actiu;
+    private int actiu;
     
     protected Soci(){
         
     }
 
-    public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, byte[] foto, boolean actiu) {
+    public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, byte[] foto, int actiu) {
         setNif(nif);
         setNom(nom);
         setCognom1(cognom1);
@@ -62,7 +65,7 @@ public class Soci implements Serializable{
         setActiu(actiu);
     }
 
-    public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, boolean actiu) {
+    public Soci(String nif, String nom, String cognom1, String cognom2, Date data_alta, String password_hash, int actiu) {
         setNif(nif);
         setNom(nom);
         setCognom1(cognom1);
@@ -132,17 +135,17 @@ public class Soci implements Serializable{
         this.foto = foto;
     }
 
-    public boolean isActiu() {
+    public int isActiu() {
         return actiu;
     }
 
-    public void setActiu(boolean actiu) {
+    public void setActiu(int actiu) {
         this.actiu = actiu;
     }
 
     @Override
     public String toString() {
-        return "Soci{" + "id=" + id + ", nif=" + nif + ", nom=" + nom + ", cognom1=" + cognom1 + ", cognom2=" + cognom2 + ", dataAlta=" + dataAlta + ", passwordHash=" + passwordHash + ", foto=" + foto + ", actiu=" + actiu + '}';
+        return  nom + " " + cognom1 + " " + cognom2;
     }
     
     

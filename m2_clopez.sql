@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS soci (
   data_alta timestamp NOT NULL,
   password_hash varchar(32) NOT NULL,
   foto longblob,
-  actiu tinyint NOT NULL,
+  actiu int(1) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS torneig (
   id int(11) NOT NULL AUTO_INCREMENT,
   nom varchar(30) NOT NULL,
   data_inici timestamp NOT NULL,
-  preinscripcio_oberta bool NOT NULL,
+  preinscripcio_oberta int(1) NOT NULL,
   modalitat_id int(11) NOT NULL,
   PRIMARY KEY (id)
 );

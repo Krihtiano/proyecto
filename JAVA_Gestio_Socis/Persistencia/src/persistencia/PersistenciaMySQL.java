@@ -16,6 +16,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import model.Modalitat;
 import model.Soci;
 
 /**
@@ -60,6 +61,18 @@ public class PersistenciaMySQL implements IBillar{
         socis.addAll(ls);
         return socis;
     }
+    
+    
+    @Override
+    public ArrayList<Soci> getSocisValids() {
+        ArrayList<Soci> socis = new ArrayList<Soci>();
+        
+        String consulta = "select s from Soci s where actiu = 1";
+        Query qs = em.createQuery(consulta);
+        List<Soci> ls = qs.getResultList();
+        socis.addAll(ls);
+        return socis;    
+    }
 
     @Override
     public void close() throws BillarException {
@@ -98,9 +111,42 @@ public class PersistenciaMySQL implements IBillar{
     @Override
     public void addSoci(Soci s) {
         try {
+            em.getTransaction().begin();
             em.persist(s);
+            em.getTransaction().commit();
+            System.out.println(s);
+           
         } catch (Exception ex) {
-            throw new BillarException("Problemes al afegir un Soci", ex);
+            throw new BillarException("Problemes al afegir un Soci "+ ex.getMessage());
         }
     }
+
+    @Override
+    public void removeSoci(int id) {
+        try {
+
+                em.getTransaction().begin();
+
+            ArrayList<Soci> socis = this.getSocis();
+            Soci s = socis.get(id-1);
+            s.setActiu(0);
+            em.merge(s);
+            em.getTransaction().commit();
+        }
+        catch (Exception ex) {
+            throw new BillarException("Problemes al esborrar un Soci", ex);
+        }
+    }
+
+    @Override
+    public ArrayList<Modalitat> getModalitats() {
+        ArrayList<Modalitat> modalitats = new ArrayList<Modalitat>();
+        
+        String consulta = "select m from Modalitat m";
+        Query qs = em.createQuery(consulta);
+        List<Modalitat> lm = qs.getResultList();
+        modalitats.addAll(lm);
+        return modalitats;
+    }
+
 }
