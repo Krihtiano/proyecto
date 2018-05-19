@@ -4,13 +4,12 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>model.Soci</class>
         <class>model.Modalitat</class>
-        <!--<class>model.EstadisticaModalitat</class> -->
+        <class>model.EstadisticaModalitat</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://92.222.27.83:3306/m2_clopez"/>
             <property name="javax.persistence.jdbc.user" value="m2-clopez"/>
             <property name="javax.persistence.jdbc.password" value="47751177A"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <!--<property name="javax.persistence.schema-generation.database.action" value="none"/>-->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
             <property name="hibernate.show_sql" value="true"/>

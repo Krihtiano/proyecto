@@ -27,8 +27,9 @@ public class Modalitat implements Serializable{
     private String description;
     
     protected Modalitat(){
-        
     }
+    
+    
 
     public Modalitat(String description) {
         this.description = description;

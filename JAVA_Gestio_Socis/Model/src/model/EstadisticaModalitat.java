@@ -33,17 +33,25 @@ public class EstadisticaModalitat implements Serializable{
     
     @Basic(optional = false)
     @Column(nullable = false, name = "coeficient_base")
-    private int coeficientBase;
+    private Float coeficientBase;
     
     @Basic(optional = false)
     @Column(nullable = false, name = "total_caramboles_temporada_actual")
-    private int totalCarambolesTemporadaActual;
+    private Integer totalCarambolesTemporadaActual;
     
     @Basic(optional = false)
     @Column(nullable = false, name = "total_entrades_temporada_actual")
-    private int totalEntradesTemporadaActual;
+    private Integer totalEntradesTemporadaActual;
 
     protected EstadisticaModalitat() {
+    }
+
+    public EstadisticaModalitat(Soci soci, Modalitat modalitat, Float coeficientBase, Integer totalCarambolesTemporadaActual, Integer totalEntradesTemporadaActual) {
+        this.soci = soci;
+        this.modalitat = modalitat;
+        this.coeficientBase = coeficientBase;
+        this.totalCarambolesTemporadaActual = totalCarambolesTemporadaActual;
+        this.totalEntradesTemporadaActual = totalEntradesTemporadaActual;
     }
     
     public Soci getSoci() {
@@ -62,27 +70,27 @@ public class EstadisticaModalitat implements Serializable{
         this.modalitat = modalitat;
     }
 
-    public int getCoeficientBase() {
+    public Float getCoeficientBase() {
         return coeficientBase;
     }
 
-    public void setCoeficientBase(int coeficientBase) {
+    public void setCoeficientBase(Float coeficientBase) {
         this.coeficientBase = coeficientBase;
     }
 
-    public int getTotalCarambolesTemporadaActual() {
+    public Integer getTotalCarambolesTemporadaActual() {
         return totalCarambolesTemporadaActual;
     }
 
-    public void setTotalCarambolesTemporadaActual(int totalCarambolesTemporadaActual) {
+    public void setTotalCarambolesTemporadaActual(Integer totalCarambolesTemporadaActual) {
         this.totalCarambolesTemporadaActual = totalCarambolesTemporadaActual;
     }
 
-    public int getTotalEntradesTemporadaActual() {
+    public Integer getTotalEntradesTemporadaActual() {
         return totalEntradesTemporadaActual;
     }
 
-    public void setTotalEntradesTemporadaActual(int totalEntradesTemporadaActual) {
+    public void setTotalEntradesTemporadaActual(Integer totalEntradesTemporadaActual) {
         this.totalEntradesTemporadaActual = totalEntradesTemporadaActual;
     }
 

@@ -16,6 +16,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import model.EstadisticaModalitat;
 import model.Modalitat;
 import model.Soci;
 
@@ -42,15 +43,6 @@ public class PersistenciaMySQL implements IBillar{
         }
     }
 
-   /* public static void main(String[] args) {
-        PersistenciaMySQL pmys = new PersistenciaMySQL("UP-MySQL");
-        ArrayList<Soci> socis = pmys.getSocis();
-        for (Soci s: socis) {
-            System.out.println(s.toString());
-        }
-        pmys.close();
-    }*/
-    
     @Override
     public ArrayList<Soci> getSocis() {
         ArrayList<Soci> socis = new ArrayList<Soci>();
@@ -66,7 +58,6 @@ public class PersistenciaMySQL implements IBillar{
     @Override
     public ArrayList<Soci> getSocisValids() {
         ArrayList<Soci> socis = new ArrayList<Soci>();
-        
         String consulta = "select s from Soci s where actiu = 1";
         Query qs = em.createQuery(consulta);
         List<Soci> ls = qs.getResultList();
@@ -109,10 +100,12 @@ public class PersistenciaMySQL implements IBillar{
     }
 
     @Override
-    public void addSoci(Soci s) {
+    public void addSoci(Soci s, Modalitat m, Float coeficient, Integer caramboles, Integer entrades) {
         try {
             em.getTransaction().begin();
+            EstadisticaModalitat emod = new EstadisticaModalitat(s,m,coeficient,caramboles,entrades);
             em.persist(s);
+            em.persist(emod);
             em.getTransaction().commit();
             System.out.println(s);
            
@@ -125,8 +118,7 @@ public class PersistenciaMySQL implements IBillar{
     public void removeSoci(int id) {
         try {
 
-                em.getTransaction().begin();
-
+            em.getTransaction().begin();
             ArrayList<Soci> socis = this.getSocis();
             Soci s = socis.get(id-1);
             s.setActiu(0);
@@ -134,7 +126,7 @@ public class PersistenciaMySQL implements IBillar{
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            throw new BillarException("Problemes al esborrar un Soci", ex);
+            throw new BillarException("Problemes al esborrar un Soci"+  ex.getMessage());
         }
     }
 
@@ -149,4 +141,37 @@ public class PersistenciaMySQL implements IBillar{
         return modalitats;
     }
 
+    @Override
+    public Soci getSoci(int id) {
+        Soci soci;
+        String consulta = "select s from Soci s where id = " + id;
+        Query qs = em.createQuery(consulta);
+        soci = (Soci)qs.getSingleResult();
+        return soci;   
+    }
+
+    @Override
+    public int getIdModalitat(String nomModalitat) {
+        String consulta = "select m.id from Modalitat m where m.description = '" + nomModalitat + "'";
+        Query qs = em.createQuery(consulta);
+        int idModalitat = (int)qs.getSingleResult();
+        return idModalitat;   
+    }
+
+    @Override
+    public EstadisticaModalitat getEstadisticaModalitat(int idSoci, int idModalitat) {
+        String consulta = "select em from EstadisticaModalitat em where soci = " + idSoci + " and modalitat = " + idModalitat;
+        Query qs = em.createQuery(consulta);
+        EstadisticaModalitat estMod = (EstadisticaModalitat)qs.getSingleResult();
+        return estMod;    
+    }
+
+    @Override
+    public Modalitat getModalitat(String nomModalitat) {
+        String consulta = "select m from Modalitat m where m.description = '" + nomModalitat + "'";
+        Query qs = em.createQuery(consulta);
+        Modalitat mod = (Modalitat)qs.getSingleResult();
+        return mod;   
+
+    }
 }
