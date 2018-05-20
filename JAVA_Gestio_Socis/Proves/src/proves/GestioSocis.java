@@ -9,6 +9,10 @@ import interficie.BillarException;
 import interficie.BillarPersistence;
 import interficie.IBillar;
 import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,6 +32,9 @@ import model.Modalitat;
 import model.Soci;
 import persistencia.PersistenciaMySQL;
 import java.security.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import model.EstadisticaModalitat;
 
 /**
@@ -36,9 +43,13 @@ import model.EstadisticaModalitat;
  */
 public class GestioSocis extends javax.swing.JFrame {
 
-    static IBillar pmysql = null;
-    static DefaultListModel dlm = new DefaultListModel();
-    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private static IBillar pmysql = null;
+    private static DefaultListModel dlm = new DefaultListModel();
+    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private Boolean editando = false;
+    private Boolean creando = false;
+    private JLabel jlab = new JLabel();
+    JFileChooser jfc = new JFileChooser();
     
     public static void main(String[] args) {
       
@@ -150,6 +161,8 @@ public class GestioSocis extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnDescartar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
+        jSP = new javax.swing.JScrollPane();
+        btnSeleccionarFoto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -195,6 +208,12 @@ public class GestioSocis extends javax.swing.JFrame {
 
         jLabel7.setText("Modalitat");
 
+        jCmbModalitat.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCmbModalitatItemStateChanged(evt);
+            }
+        });
+
         jLabel8.setText("Coeficient base");
 
         jLabel9.setText("Total caramboles t. actual");
@@ -204,11 +223,23 @@ public class GestioSocis extends javax.swing.JFrame {
         btnEditar.setText("Editar Soci");
 
         btnDescartar.setText("Descartar");
+        btnDescartar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescartarActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnSeleccionarFoto.setText("Seleccionar foto");
+        btnSeleccionarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarFotoActionPerformed(evt);
             }
         });
 
@@ -270,7 +301,11 @@ public class GestioSocis extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnDescartar)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnSeleccionarFoto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addComponent(jSP, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(27, 27, 27))
             .addGroup(layout.createSequentialGroup()
                 .addGap(480, 480, 480)
@@ -281,56 +316,60 @@ public class GestioSocis extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNif, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                        .addComponent(jLabel1)
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtNif, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtCognom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtCognom2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnCrear)
+                                    .addComponent(btnEliminar)
+                                    .addComponent(btnEditar)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnDescartar)
+                            .addComponent(btnGuardar))
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCognom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel7)
+                            .addComponent(jCmbModalitat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCognom2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel8)
+                            .addComponent(txtCoeficient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCrear)
-                            .addComponent(btnEliminar)
-                            .addComponent(btnEditar)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDescartar)
-                    .addComponent(btnGuardar))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jCmbModalitat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCoeficient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtCaramboles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9)
+                            .addComponent(txtCaramboles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSP, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(txtEntrades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                    .addComponent(txtEntrades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSeleccionarFoto))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         pack();
@@ -344,6 +383,7 @@ public class GestioSocis extends javax.swing.JFrame {
         btnEliminar.setEnabled(false);
         btnEditar.setEnabled(false);
         posarCampsDisabledEnabled(true);
+        creando = true;
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -356,18 +396,17 @@ public class GestioSocis extends javax.swing.JFrame {
             vaciarCampos();
             JOptionPane.showMessageDialog(null, "Soci esborrat correctament.");
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No s'ha esborrat el soci" +e.getMessage());
         } 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jListSocisPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jListSocisPropertyChange
-
 
     }//GEN-LAST:event_jListSocisPropertyChange
 
     private void jListSocisValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListSocisValueChanged
         if (!jListSocis.getValueIsAdjusting()) {
             posarCampsDisabledEnabled(false);
+            vaciarCampos();
             carregarValorsSoci();
             btnCrear.setEnabled(true);
             btnEliminar.setEnabled(true);
@@ -384,8 +423,9 @@ public class GestioSocis extends javax.swing.JFrame {
             String password = txtPassword.getText();
             Date d = new Date(); 
             java.sql.Date sqlDate = new java.sql.Date(d.getTime());
+            byte [] fotoEnBytes = getByteArrayFromFile(jfc.getSelectedFile());
 
-            Soci s = new Soci(nif,nom,cognom1,cognom2,sqlDate,getHashFromPassowrd(password),1);
+            Soci s = new Soci(nif,nom,cognom1,cognom2,sqlDate,getHashFromPassowrd(password),fotoEnBytes,1);
             Modalitat m = pmysql.getModalitat(jCmbModalitat.getSelectedItem().toString());
             
             Float coeficient = Float.parseFloat(txtCoeficient.getText());
@@ -396,18 +436,48 @@ public class GestioSocis extends javax.swing.JFrame {
             if(entrades == null){ entrades = 0;}
             
             pmysql.addSoci(s, m, coeficient, caramboles, entrades);
-            cargarListaSocis();
             btnGuardar.setEnabled(false);
             btnDescartar.setEnabled(false);
             btnCrear.setEnabled(true);
             btnEliminar.setEnabled(true);
             btnEditar.setEnabled(true);
             posarCampsDisabledEnabled(false);
+            vaciarCampos();
+            cargarListaSocis();
+            creando = false;
             JOptionPane.showMessageDialog(null, "Soci afegit correctament.");
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No s'ha pogut afegir el Soci , " + e.getMessage());
         } 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnDescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescartarActionPerformed
+        posarCampsDisabledEnabled(false);
+        vaciarCampos();
+    }//GEN-LAST:event_btnDescartarActionPerformed
+
+    private void jCmbModalitatItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCmbModalitatItemStateChanged
+        
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try{
+                vaciarEstadisticas();
+                ArrayList<Soci> socis = pmysql.getSocisValids();
+                int index = jListSocis.getSelectedIndex();
+                int idSoci = socis.get(index).getId();
+                int idModalitat = pmysql.getIdModalitat(jCmbModalitat.getSelectedItem().toString());
+                carregarEstadistiquesModalitat(idSoci,idModalitat);
+            } catch(Exception e){
+            }
+        }  
+    }//GEN-LAST:event_jCmbModalitatItemStateChanged
+
+    private void btnSeleccionarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarFotoActionPerformed
+        if(jfc.showOpenDialog(jLabel1) == JFileChooser.APPROVE_OPTION){
+            File f = jfc.getSelectedFile();
+            jlab.setIcon(new ImageIcon(f.toString()));
+            jlab.setHorizontalAlignment(JLabel.CENTER);
+            jSP.getViewport().add(jlab);
+        }
+    }//GEN-LAST:event_btnSeleccionarFotoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
@@ -415,6 +485,7 @@ public class GestioSocis extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnSeleccionarFoto;
     private javax.swing.JComboBox<String> jCmbModalitat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -427,6 +498,7 @@ public class GestioSocis extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private static javax.swing.JList<String> jListSocis;
+    private javax.swing.JScrollPane jSP;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtCaramboles;
     private javax.swing.JTextField txtCoeficient;
@@ -440,12 +512,7 @@ public class GestioSocis extends javax.swing.JFrame {
 
     private void cargarListaSocis() {
         ArrayList<Soci> socis = pmysql.getSocisValids(); 
-        try{
-            dlm.removeAllElements();
-        }catch(Exception e){
-            
-        }
-
+        dlm = new DefaultListModel();
         for (Soci s : socis){
             dlm.addElement(s);
         }
@@ -470,17 +537,8 @@ public class GestioSocis extends javax.swing.JFrame {
         txtNif.setText(s.getNif());
         txtCognom.setText(s.getCognom1());
         txtCognom2.setText(s.getCognom2());
-        carregarEstadistiquesModalitat(idSoci,idModalitat);
-    }
-    
-
-    private String getHashFromPassowrd(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
-        byte[] bytesOfMessage = password.getBytes("UTF-8");
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md5.digest(bytesOfMessage);
-        
-        String encryptedString = thedigest.toString();
-        return encryptedString;
+        cargarFoto(s.getFoto());
+        carregarEstadistiquesModalitat(idSoci,idModalitat);  
     }
 
     private void carregarEstadistiquesModalitat(int idSoci, int idModalitat) {
@@ -524,6 +582,9 @@ public class GestioSocis extends javax.swing.JFrame {
             if(btnDescartar.isEnabled() == !b){
                 btnDescartar.setEnabled(b);
             }
+            if(btnSeleccionarFoto.isEnabled() == !b){
+                btnSeleccionarFoto.setEnabled(b);
+            }
     }
 
     private void vaciarCampos() {
@@ -535,5 +596,51 @@ public class GestioSocis extends javax.swing.JFrame {
         txtCaramboles.setText("");
         txtEntrades.setText("");
         txtCoeficient.setText("");
+    }
+    
+    private void vaciarEstadisticas() {
+        txtCaramboles.setText("");
+        txtEntrades.setText("");
+        txtCoeficient.setText("");
+    }
+    
+    
+    private String getHashFromPassowrd(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        byte[] bytesOfMessage = password.getBytes("UTF-8");
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        byte[] thedigest = md5.digest(bytesOfMessage);
+        
+        String encryptedString = thedigest.toString();
+        return encryptedString;
+    }
+
+    private void cargarFoto(byte[] foto) {
+        if(foto == null){
+            jlab.setIcon(null);
+        }
+        try{
+            jlab.setIcon(new ImageIcon(foto));
+            jlab.setHorizontalAlignment(JLabel.CENTER);
+            jSP.getViewport().add(jlab);  
+        }catch(Exception e){
+            
+        }
+    }
+
+    private byte [] getByteArrayFromFile(File selectedFile) throws FileNotFoundException {
+        FileInputStream fis = new FileInputStream(selectedFile);
+ 
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum); 
+            }
+        } catch (IOException ex) {
+            return null;
+        }
+ 
+        byte[] bytes = bos.toByteArray();
+        return bytes;
     }
 }
