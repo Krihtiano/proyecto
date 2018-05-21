@@ -51,6 +51,12 @@ public interface IBillar {
     
     //Retorna una modalitat passant per paràmetre un nom de modalitat
     public Modalitat getModalitat(String nomModalitat);
+    
+    //Passant un soci, l'edita i el desa a la base de dades.
+    public void editarSoci(Soci s);
+    
+    //Modifica una estadistica de modalitat passant per parametre aquesta.
+    public void editarEM(EstadisticaModalitat emod);
    
 
 }

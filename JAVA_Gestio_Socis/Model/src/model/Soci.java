@@ -84,6 +84,9 @@ public class Soci implements Serializable{
     }
 
     public void setNif(String nif) {
+        if(nif.length() == 0 || nif == null){
+            throw new RuntimeException("El nif no pot ser vuit o null");
+        }
         this.nif = nif;
     }
 
@@ -92,6 +95,9 @@ public class Soci implements Serializable{
     }
 
     public void setNom(String nom) {
+        if(nom.length() == 0 || nom == null){
+            throw new RuntimeException("El nom no pot ser vuit o null");
+        }
         this.nom = nom;
     }
 
@@ -100,6 +106,9 @@ public class Soci implements Serializable{
     }
 
     public void setCognom1(String cognom1) {
+        if(cognom1.length() == 0 || cognom1 == null){
+            throw new RuntimeException("El cognom no pot ser vuit o null");
+        }
         this.cognom1 = cognom1;
     }
 
@@ -108,6 +117,9 @@ public class Soci implements Serializable{
     }
 
     public void setCognom2(String cognom2) {
+        if(cognom2.length() == 0 || cognom2 == null){
+            throw new RuntimeException("El segón cognom no pot ser vuit o null");
+        }
         this.cognom2 = cognom2;
     }
 
@@ -124,6 +136,9 @@ public class Soci implements Serializable{
     }
 
     public void setPasswordHash(String pw) {
+        if(pw.length() == 0 || pw == null){
+            throw new RuntimeException("El password no pot ser vuit o null");
+        }
         this.passwordHash = pw;
     }
 

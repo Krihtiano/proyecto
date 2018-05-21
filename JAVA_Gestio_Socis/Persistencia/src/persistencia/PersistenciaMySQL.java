@@ -7,6 +7,9 @@ package persistencia;
 
 import interficie.BillarException;
 import interficie.IBillar;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -104,6 +107,7 @@ public class PersistenciaMySQL implements IBillar{
         try {
             em.getTransaction().begin();
             EstadisticaModalitat emod = new EstadisticaModalitat(s,m,coeficient,caramboles,entrades);
+            s.setPasswordHash(getHashFromPassowrd(s.getPasswordHash()));
             em.persist(s);
             em.persist(emod);
             em.getTransaction().commit();
@@ -126,7 +130,7 @@ public class PersistenciaMySQL implements IBillar{
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            throw new BillarException("Problemes al esborrar un Soci"+  ex.getMessage());
+            throw new BillarException("Problemes en esborrar un Soci"+  ex.getMessage());
         }
     }
 
@@ -173,5 +177,38 @@ public class PersistenciaMySQL implements IBillar{
         Modalitat mod = (Modalitat)qs.getSingleResult();
         return mod;   
 
+    }
+    
+    private String getHashFromPassowrd(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        byte[] bytesOfMessage = password.getBytes("UTF-8");
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        byte[] thedigest = md5.digest(bytesOfMessage);
+        
+        String encryptedString = thedigest.toString();
+        return encryptedString;
+    }
+
+    @Override
+    public void editarSoci(Soci s) {
+        try {
+            em.getTransaction().begin();
+            em.merge(s);
+            em.getTransaction().commit();
+        }
+        catch (Exception ex) {
+            throw new BillarException("Problemes en editar un Soci"+  ex.getMessage());
+        }
+    }
+
+    @Override
+    public void editarEM(EstadisticaModalitat emod) {
+        try {
+            em.getTransaction().begin();
+            em.merge(emod);
+            em.getTransaction().commit();
+        }
+        catch (Exception ex) {
+            throw new BillarException("Problemes en editar una estadística"+  ex.getMessage());
+        } 
     }
 }
