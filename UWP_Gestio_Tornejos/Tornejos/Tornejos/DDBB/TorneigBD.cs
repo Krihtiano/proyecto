@@ -264,10 +264,83 @@ namespace Tornejos.DDBB
 
         internal static object selectTornejosFiltrados(bool data, bool estat)
         {
-           
+            String dataString = data == true ? "asc" : "desc";
+            Int32 estatInt = estat == true ? 1 : 0;
+
+            ObservableCollection<Torneig> tornejos = new ObservableCollection<Torneig>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = data == true ? @"select * from torneig where preinscripcio_oberta = @estat order by data_inici asc" : @"select * from torneig where preinscripcio_oberta = @estat order by data_inici desc";
+                    UtilsDB.AddParameter(consulta, "estat", estatInt, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
+                        string nom = reader.GetString(reader.GetOrdinal("nom"));
+                        DateTime dataAlta = reader.GetDateTime(reader.GetOrdinal("data_inici"));
+                        DateTime dataFinalitzacio = new DateTime();
+                        try
+                        {
+                            dataFinalitzacio = reader.GetDateTime(reader.GetOrdinal("data_finalitzacio"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        Int32 preinscripcioOberta = reader.GetInt32(reader.GetOrdinal("preinscripcio_oberta"));
+                        Modalitat mod = TorneigBD.selectModalitatPerId(reader.GetInt32(reader.GetOrdinal("modalitat_id")));
+                        Torneig t = new Torneig(id, nom, dataAlta, dataFinalitzacio, preinscripcioOberta, mod);
+
+                        tornejos.Add(t);
+                    }
+
+                }
+            }
+            return tornejos;
         }
 
+        internal static object selectTornejosFiltrados(bool data)
+        {
+            ObservableCollection<Torneig> tornejos = new ObservableCollection<Torneig>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = data == true ? @"select * from torneig order by data_inici asc" : @"select * from torneig order by data_inici desc";
 
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
+                        string nom = reader.GetString(reader.GetOrdinal("nom"));
+                        DateTime dataAlta = reader.GetDateTime(reader.GetOrdinal("data_inici"));
+                        DateTime dataFinalitzacio = new DateTime();
+                        try
+                        {
+                            dataFinalitzacio = reader.GetDateTime(reader.GetOrdinal("data_finalitzacio"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        Int32 preinscripcioOberta = reader.GetInt32(reader.GetOrdinal("preinscripcio_oberta"));
+                        Modalitat mod = TorneigBD.selectModalitatPerId(reader.GetInt32(reader.GetOrdinal("modalitat_id")));
+                        Torneig t = new Torneig(id, nom, dataAlta, dataFinalitzacio, preinscripcioOberta, mod);
+
+                        tornejos.Add(t);
+                    }
+
+                }
+            }
+            return tornejos;
+        }
         /*public static ObservableCollection<Modalitat> GetAllDept(string numeroDept = "" , string nomLocalitat = "")
         {
             ObservableCollection<Dept> depts = new ObservableCollection<Dept>();

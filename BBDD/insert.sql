@@ -13,8 +13,8 @@ INSERT INTO estadistica_modalitat (soci_id, modalitat_id, coeficient_base, total
 INSERT INTO estadistica_modalitat (soci_id, modalitat_id, coeficient_base, total_caramboles_temporada_actual, total_entrades_temporada_actual) VALUES (3, 3, 1.0, 12, 5);
 
 INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar I', '2018-05-15', true, 1);
-INSERT INTO torneig (nom, data_inici, data_finalitzacio, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar II', '2018-05-15', '2018-05-23', false, 2);
-INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar III', '2018-05-15', true, 3);
+INSERT INTO torneig (nom, data_inici, data_finalitzacio, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar II', '2018-05-16', '2018-05-23', false, 2);
+INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar III', '2018-05-17', true, 3);
 
 INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup A', 10, 10, 1);
 INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup A', 20, 20, 1);

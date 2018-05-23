@@ -8,6 +8,7 @@ using Tornejos.DDBB;
 using Tornejos.Model;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,7 +21,7 @@ namespace Tornejos
 {
     public sealed partial class MainPage : Page
     {
-        private Boolean data, estat;
+        private Boolean data = false, estat = false;
 
 
 
@@ -50,7 +51,93 @@ namespace Tornejos
         private void lvTornejos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Torneig t = (Torneig)lvTornejos.SelectedItem;
-            lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+            if (t == null)
+            {
+                lvGrups.ItemsSource = null;
+            }
+            else
+            {
+                lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+            }
+        }
+
+        private void btnFiltreEstat_Click(object sender, RoutedEventArgs e)
+        {
+            if(estat == false)
+            {
+                lvTornejos.ItemsSource = TorneigBD.selectTornejosFiltrados(data, estat);
+                btnFiltreEstat.Content = "Estat Tancat";
+                estat = true;
+            }
+            else
+            {
+                lvTornejos.ItemsSource = TorneigBD.selectTornejosFiltrados(data, estat);
+                btnFiltreEstat.Content = "Estat Obert";
+                estat = false;
+            }
+        }
+
+        private void btnFiltreData_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (data == false)
+            {
+                lvTornejos.ItemsSource = TorneigBD.selectTornejosFiltrados(data);
+                btnFiltreData.Content = "Data Descendent";
+                data = true;
+            }
+            else
+            {
+                lvTornejos.ItemsSource = TorneigBD.selectTornejosFiltrados(data);
+                btnFiltreData.Content = "Data Ascendent";
+                data = false;
+            }
+        }
+
+        private void btnCrearTorneig_Click(object sender, RoutedEventArgs e)
+        {
+            if(!(txbTitol.Text.Length >= 2 || txbTitol.Text.Length > 30)) {
+                DisplayInvalidTorneigName();
+            }
+
+            if(cmbModalitats.SelectedItem == null)
+            {
+                DisplayInvalidModalitat();
+            }
+
+
+
+        }
+
+        private void btnEliminarFiltres_Click(object sender, RoutedEventArgs e)
+        {
+            lvTornejos.ItemsSource = TorneigBD.selectTornejos();
+            btnFiltreData.Content = "Data Ascendent";
+            btnFiltreEstat.Content = "Estat Obert";
+        }
+
+        private async void DisplayInvalidTorneigName()
+        {
+            ContentDialog noWifiDialog = new ContentDialog
+            {
+                Title = "Titol incorrecte",
+                Content = "El nom del Torneig es incorrecte (2-30) caracters",
+                PrimaryButtonText = "Ok"
+            };
+
+            ContentDialogResult result = await noWifiDialog.ShowAsync();
+        }
+
+        private async void DisplayInvalidModalitat()
+        {
+            ContentDialog noWifiDialog = new ContentDialog
+            {
+                Title = "Modalitat incorrecta",
+                Content = "La modalitat es incorrecta",
+                PrimaryButtonText = "Ok"
+            };
+
+            ContentDialogResult result = await noWifiDialog.ShowAsync();
         }
     }
 }

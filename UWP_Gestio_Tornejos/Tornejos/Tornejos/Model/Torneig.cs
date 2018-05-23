@@ -115,7 +115,7 @@ namespace Tornejos.Model
         {
             get {
                 Int32 totalPartides = TorneigBD.selectTotalPartidesPerTorneig(this.Id);
-                return " Total partides: " +totalPartides; 
+                return " Partides: " + totalPartides; 
                 }
             set { }
         }
@@ -124,7 +124,7 @@ namespace Tornejos.Model
             get
             {
                 Int32 totalGrups = TorneigBD.selectTotalGrupsPerTorneig(this.Id);
-                return " Total grups: " + totalGrups;
+                return " Grups: " + totalGrups;
             }
             set { }
         }

@@ -49,7 +49,7 @@
                         <ComboBox x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="103,115,0,0" VerticalAlignment="Top" Width="289"/>
                         <TextBlock x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
                         <DatePicker x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="72,41,0,0" VerticalAlignment="Top" Width="320"/>
-                        <Button x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top"/>
+                        <Button x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Click="btnCrearTorneig_Click"/>
 
                     </Grid>
                 </PivotItem>
@@ -81,10 +81,11 @@
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="122,8,0,0" TextWrapping="Wrap" Text="Llistat de Tornejos" VerticalAlignment="Top" FontSize="20"/>
             <ListView x:Name="lvTornejos" SelectionChanged="lvTornejos_SelectionChanged" ItemTemplate="{StaticResource TornejosTemplate}" HorizontalAlignment="Left" Height="325" Margin="10,42,0,0" VerticalAlignment="Top" Width="380"/>
             <ListView x:Name="lvGrups" IsEnabled="False" ItemTemplate="{StaticResource GrupsTemplate}" HorizontalAlignment="Left" Height="217" Margin="10,372,0,0" VerticalAlignment="Top" Width="380"/>
-            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="10,594,0,0" VerticalAlignment="Top" Width="123"/>
+            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="10,594,0,0" VerticalAlignment="Top" Width="133" Click="btnFiltreData_Click"/>
             <Button x:Name="btnEsborrar" Content="Esborrar Torneig" HorizontalAlignment="Left" Margin="262,658,0,0" VerticalAlignment="Top"/>
             <Button x:Name="btnTancar" Content="Tancar Torneig" HorizontalAlignment="Left" Margin="10,658,0,0" VerticalAlignment="Top" Width="123"/>
-            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="262,594,0,0" VerticalAlignment="Top" Width="128"/>
+            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="148,594,0,0" VerticalAlignment="Top" Width="110" Click="btnFiltreEstat_Click"/>
+            <Button x:Name="btnEliminarFiltres" Content="Elimina filtre" HorizontalAlignment="Left" Margin="263,594,0,0" VerticalAlignment="Top" Width="127" Click="btnEliminarFiltres_Click"/>
 
         </Grid>
     </Grid>
