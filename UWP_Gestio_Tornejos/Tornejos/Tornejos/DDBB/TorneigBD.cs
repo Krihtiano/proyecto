@@ -42,7 +42,6 @@ namespace Tornejos.DDBB
         {
             Modalitat m = null;
 
-
             using (MySqlConnection connexio = MySQL.GetConnexio())
             {
                 connexio.Open();
@@ -84,7 +83,8 @@ namespace Tornejos.DDBB
                     {
                         Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
                         string nom = reader.GetString(reader.GetOrdinal("nom"));
-                        DateTime dataAlta = reader.GetDateTime(reader.GetOrdinal("data_inici"));
+                        DateTime dataAlta = new DateTime();
+                        dataAlta = reader.GetDateTime(reader.GetOrdinal("data_inici"));
                         DateTime dataFinalitzacio = new DateTime();
                         try
                         {
@@ -140,7 +140,7 @@ namespace Tornejos.DDBB
 
         internal static bool TorneigActiuONo(int idTorneig)
         {
-            Boolean preinscripcioOberta = false;
+            DateTime finalitzatONo;
             using (MySqlConnection connexio = MySQL.GetConnexio())
             {
                 connexio.Open();
@@ -153,11 +153,22 @@ namespace Tornejos.DDBB
                     MySqlDataReader reader = consulta.ExecuteReader();
                     while (reader.Read())
                     {
-                        preinscripcioOberta = reader.GetBoolean(reader.GetOrdinal("preinscripcio_oberta"));
+                        try
+                        {
+                            finalitzatONo = reader.GetDateTime(reader.GetOrdinal("data_finalitzacio"));
+                            if(finalitzatONo <= DateTime.Now || ( finalitzatONo.Day == DateTime.Now.Day && finalitzatONo.Month == DateTime.Now.Month && finalitzatONo.Year == DateTime.Now.Year))
+                            {
+                                return false;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
-            return preinscripcioOberta;
+            return true;
         }
 
         internal static int selectCountPartidesTotalesPerIdTorneigNumGrup(int idTorneig, int numGrup)
@@ -341,6 +352,246 @@ namespace Tornejos.DDBB
             }
             return tornejos;
         }
+
+
+        internal static void insertTorneig(Torneig t, String data)
+        {
+            String b;
+            if(t.PreinscripcioOberta == 0)
+            {
+                b = "true";
+            }else
+            {
+                b = "false";
+            }
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES (@nomTorneig, @data, @actiu, @modalitat);";
+                    UtilsDB.AddParameter(consulta, "nomTorneig", t.Nom, MySqlDbType.String);
+                    UtilsDB.AddParameter(consulta, "data", data, MySqlDbType.String);
+                    UtilsDB.AddParameter(consulta, "actiu", t.PreinscripcioOberta, MySqlDbType.Int32);
+                    Int64 modalitatId = selectModalitatPerId((Int32)(long)t.Modalitat.Id).Id;
+                    UtilsDB.AddParameter(consulta, "modalitat", modalitatId, MySqlDbType.Int32);
+
+                    consulta.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        internal static Modalitat selectModalitatPerNom(string mSeleccionada)
+        {
+            Modalitat m = null;
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+                    consulta.CommandText = @"select * from modalitat m where m.description = @mNom";
+                    UtilsDB.AddParameter(consulta, "mNom", mSeleccionada, MySqlDbType.String);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string descripcio = reader.GetString(reader.GetOrdinal("description"));
+                        Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
+                        m = new Modalitat(id, descripcio);
+
+                    }
+                }
+            }
+            return m;
+        }
+
+        internal static int selectCountPartidesTotalesDeTorneig(int idTorneig)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    return ((Int32)(long)consulta.ExecuteScalar());
+                }
+            }
+        }
+
+        internal static int tancarTorneig(int id)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+                    consulta.CommandText = @"update torneig set data_finalitzacio=@data_final where id = @idTorneig";
+
+                    String dateTimeCorrecto = getDataSQLFromDateTime(DateTime.Now);
+
+                    UtilsDB.AddParameter(consulta, "data_final", dateTimeCorrecto, MySqlDbType.String);
+                    UtilsDB.AddParameter(consulta, "idTorneig", id, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                        return 1;
+                    }
+                    catch (Exception e)
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        internal static void EsborrarTorneig(int idTorneig)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+
+                    consulta.CommandText = "delete from torneig where id =@idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        trans.Rollback();
+                    }
+                }
+            }
+        }
+
+        internal static void EsborrarInscritsDeUnTorneig(int idTorneig)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+
+                    consulta.CommandText = "delete from inscrit where torneig_id =@idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        trans.Rollback();
+                    }
+                }
+            }
+        }
+
+        internal static void EsborrarGrupsDeUnTorneig(int idTorneig)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+
+                    consulta.CommandText = "delete from grup where torneig_id =@idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        trans.Rollback();
+                    }
+                }
+            }
+        }
+
+        internal static void EsborrarPartidesDeUnTorneig(int idTorneig)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+
+                    consulta.CommandText = "delete from partida where torneig_id =@idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+
+                    }
+                    catch (Exception e)
+                    {
+                        trans.Rollback();
+                    }
+                }
+
+            }
+        }
+
+        internal static int tancarPreinscripcioTorneig(int id)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+                    consulta.CommandText = @"update torneig set preinscripcio_oberta=0 where id = @idTorneig";
+
+                    UtilsDB.AddParameter(consulta, "idTorneig", id, MySqlDbType.Int32);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                        return 1;
+                    }
+                    catch (Exception e)
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        public static String getDataSQLFromDateTime(DateTime data)
+        {
+            return data.Year + "-" + data.Month + "-" + data.Day;
+        }
+
         /*public static ObservableCollection<Modalitat> GetAllDept(string numeroDept = "" , string nomLocalitat = "")
         {
             ObservableCollection<Dept> depts = new ObservableCollection<Dept>();

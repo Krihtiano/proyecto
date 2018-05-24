@@ -30,8 +30,6 @@ namespace Tornejos
             this.InitializeComponent();
             inflarCmbModalitats();
             inflarLvTornejos();
-
-
         }
 
         private void inflarLvTornejos()
@@ -97,18 +95,24 @@ namespace Tornejos
         private void btnCrearTorneig_Click(object sender, RoutedEventArgs e)
         {
             if(!(txbTitol.Text.Length >= 2 || txbTitol.Text.Length > 30)) {
-                DisplayInvalidTorneigName();
+                DisplayError("Error", "El nom del torneig es incorrecte(2-30 caracters)");
+                return;
             }
 
             if(cmbModalitats.SelectedItem == null)
             {
-                DisplayInvalidModalitat();
+                DisplayError("Error", "Modalitat incorrecte");
+                return;
             }
-
-
-
+            String mSeleccionada = cmbModalitats.SelectedItem.ToString();
+            Modalitat m = TorneigBD.selectModalitatPerNom(mSeleccionada);
+            DateTimeOffset sourceTime = dtpDataTorneig.Date;
+            DateTime data = sourceTime.DateTime;
+            String dataEnString = getDataSQLFromDateTime(data);
+            Torneig t = new Torneig(txbTitol.Text, data, 1, m);
+            TorneigBD.insertTorneig(t, dataEnString);
+            lvTornejos.ItemsSource = TorneigBD.selectTornejos();
         }
-
         private void btnEliminarFiltres_Click(object sender, RoutedEventArgs e)
         {
             lvTornejos.ItemsSource = TorneigBD.selectTornejos();
@@ -116,28 +120,106 @@ namespace Tornejos
             btnFiltreEstat.Content = "Estat Obert";
         }
 
-        private async void DisplayInvalidTorneigName()
+        private void btnClassificacio_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnEntradaResultats_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTancar_Click(object sender, RoutedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+
+            if (t != null)
+            {
+                if (t.DataFinalitzacio >= DateTime.Now || (t.DataFinalitzacio.Day == DateTime.Now.Day && t.DataFinalitzacio.Month == DateTime.Now.Month && t.DataFinalitzacio.Year == DateTime.Now.Year))
+                {
+                    DisplayError("Error", "Aquest torneig ja està tancat");
+                    return;
+                }
+
+                Torneig g = (Torneig)lvTornejos.SelectedItem;
+                int partidesDelTorneig = TorneigBD.selectCountPartidesTotalesDeTorneig(g.Id);
+                if(partidesDelTorneig == 0)
+                {
+                    TorneigBD.tancarPreinscripcioTorneig(g.Id);
+                    int seHaCerrado = TorneigBD.tancarTorneig(g.Id);
+                    if(seHaCerrado == 1)
+                    {
+                        DisplayError("Torneig tancat", "S'ha tancat el torneig correctament");
+                        lvTornejos.ItemsSource = TorneigBD.selectTornejos();
+                    }else
+                    {
+                        DisplayError("Error", "No s'ha pogut tancar el torneig");
+                    }
+                }else
+                {
+                    DisplayError("Error", "El torneig te partides encara per finaltizar");
+                }
+            }
+        }
+
+        public static String getDataSQLFromDateTime(DateTime data)
+        {
+            return data.Year + "-" + data.Month + "-" + data.Day;
+        }
+
+        private async void DisplayError(String title, String content)
         {
             ContentDialog noWifiDialog = new ContentDialog
             {
-                Title = "Titol incorrecte",
-                Content = "El nom del Torneig es incorrecte (2-30) caracters",
+                Title = title,
+                Content = content,
                 PrimaryButtonText = "Ok"
             };
 
             ContentDialogResult result = await noWifiDialog.ShowAsync();
         }
 
-        private async void DisplayInvalidModalitat()
+        private void btnEsborrar_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog noWifiDialog = new ContentDialog
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+            if (t != null)
             {
-                Title = "Modalitat incorrecta",
-                Content = "La modalitat es incorrecta",
-                PrimaryButtonText = "Ok"
+                int numPartidesPerTorneig = TorneigBD.selectCountPartidesTotalesDeTorneig(t.Id);
+                if (numPartidesPerTorneig >= 1)
+                {
+                    DisplayDeleteTorneigDialog(t.Id);
+                }
+                else
+                {
+                    TorneigBD.EsborrarPartidesDeUnTorneig(t.Id);
+                    TorneigBD.EsborrarInscritsDeUnTorneig(t.Id);
+                    TorneigBD.EsborrarGrupsDeUnTorneig(t.Id);
+                    TorneigBD.EsborrarTorneig(t.Id);
+                }
+            }
+        }
+
+        private async void DisplayDeleteTorneigDialog(Int32 idTorneig)
+        {
+            ContentDialog TorneigDeleteDialog = new ContentDialog
+            {
+                Title = "Warning",
+                Content = "El torneig que vols esborrar conté partides pendents, segur que vols esborrar-ho?",
+                PrimaryButtonText = "Delete",
+                SecondaryButtonText = "Cancel"
             };
 
-            ContentDialogResult result = await noWifiDialog.ShowAsync();
+            ContentDialogResult result = await TorneigDeleteDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                TorneigBD.EsborrarPartidesDeUnTorneig(idTorneig);
+                TorneigBD.EsborrarInscritsDeUnTorneig(idTorneig);
+                TorneigBD.EsborrarGrupsDeUnTorneig(idTorneig);
+                TorneigBD.EsborrarTorneig(idTorneig);
+                lvTornejos.ItemsSource = TorneigBD.selectTornejos();
+            }
         }
     }
 }

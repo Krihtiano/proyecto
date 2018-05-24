@@ -13,8 +13,17 @@
 
             <StackPanel Orientation="Horizontal">
                 <Border>
-                    <TextBlock x:Name="txbDataTornejos" Text="{Binding Informacio}" Width="400"/>
+                    <TextBlock x:Name="txbDataTornejos" Text="{Binding Informacio}" Width="300"/>
                 </Border>
+                <StackPanel Orientation="Horizontal" Width="110">
+                    <Button x:Name="btnClassificacio" Margin="2" Width="50" Click="btnClassificacio_Click">
+                        <SymbolIcon Symbol="ZeroBars"/>
+                    </Button>
+                    <Button x:Name="btnEntradaResultats" Margin="2" Width="50" Click="btnEntradaResultats_Click">
+                        <SymbolIcon Symbol="ContactInfo"/>
+                    </Button>
+                </StackPanel>
+
             </StackPanel>
         </DataTemplate>
 
@@ -36,25 +45,33 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"></ColumnDefinition>
+                <ColumnDefinition Width="500"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Pivot Grid.Column="1">
                 <PivotItem Header="Tornejos">
                     <Grid>
-                        <TextBox x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,78,384,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="320" Height="4"/>
-                        <TextBlock x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"></TextBlock>
-                        <TextBlock x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="10,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
-                        <ComboBox x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="103,115,0,0" VerticalAlignment="Top" Width="289"/>
-                        <TextBlock x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
-                        <DatePicker x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="72,41,0,0" VerticalAlignment="Top" Width="320"/>
-                        <Button x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Click="btnCrearTorneig_Click"/>
+                        <TextBox x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,312,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="320" Height="4"/>
+                        <TextBlock x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="58" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="6,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
+                        <ComboBox x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="99,113,0,0" VerticalAlignment="Top" Width="289"/>
+                        <TextBlock x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="6,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
+                        <DatePicker x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="68,39,0,0" VerticalAlignment="Top" Width="320"/>
+                        <Button x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top" Click="btnCrearTorneig_Click"/>
 
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Grups">
                     <Grid>
+                        <TextBlock x:Name="textBlockGrupName" Text="Nom del grup" HorizontalAlignment="Left" Margin="9,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="136" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:Name="textBlockCaramboles" Text="Objectiu caramboles" HorizontalAlignment="Left" Margin="9,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:Name="textBlockEntrades" Text="Limit entrades" HorizontalAlignment="Left" Margin="9,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
+                        <TextBox x:Name="txtNomGrup" HorizontalAlignment="Left" Margin="150,37,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="361"/>
+                        <TextBox x:Name="txtCarambolesGrup" HorizontalAlignment="Left" Margin="200,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311"/>
+                        <TextBox x:Name="txtLimitEntradesGrup" HorizontalAlignment="Left" Margin="150,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="361"/>
+                        <Button x:Name="btnCrearGrup" Content="Crear grup" HorizontalAlignment="Left" Margin="9,174,0,0" VerticalAlignment="Top" Width="136"/>
+                        <TextBlock x:Name="textBlockListaInscritos" Text="Llista inscrits" HorizontalAlignment="Center" Margin="465,277,94,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.505,0.5" Width="117" FontSize="20" Height="32"/>
 
 
                     </Grid>
@@ -79,13 +96,13 @@
                 </PivotItem>
             </Pivot>
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="122,8,0,0" TextWrapping="Wrap" Text="Llistat de Tornejos" VerticalAlignment="Top" FontSize="20"/>
-            <ListView x:Name="lvTornejos" SelectionChanged="lvTornejos_SelectionChanged" ItemTemplate="{StaticResource TornejosTemplate}" HorizontalAlignment="Left" Height="325" Margin="10,42,0,0" VerticalAlignment="Top" Width="380"/>
-            <ListView x:Name="lvGrups" IsEnabled="False" ItemTemplate="{StaticResource GrupsTemplate}" HorizontalAlignment="Left" Height="217" Margin="10,372,0,0" VerticalAlignment="Top" Width="380"/>
-            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="10,594,0,0" VerticalAlignment="Top" Width="133" Click="btnFiltreData_Click"/>
-            <Button x:Name="btnEsborrar" Content="Esborrar Torneig" HorizontalAlignment="Left" Margin="262,658,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="btnTancar" Content="Tancar Torneig" HorizontalAlignment="Left" Margin="10,658,0,0" VerticalAlignment="Top" Width="123"/>
-            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="148,594,0,0" VerticalAlignment="Top" Width="110" Click="btnFiltreEstat_Click"/>
-            <Button x:Name="btnEliminarFiltres" Content="Elimina filtre" HorizontalAlignment="Left" Margin="263,594,0,0" VerticalAlignment="Top" Width="127" Click="btnEliminarFiltres_Click"/>
+            <ListView x:Name="lvTornejos" SelectionChanged="lvTornejos_SelectionChanged" ItemTemplate="{StaticResource TornejosTemplate}" HorizontalAlignment="Left" Height="325" Margin="10,42,0,0" VerticalAlignment="Top" Width="480"/>
+            <ListView x:Name="lvGrups" IsEnabled="False" ItemTemplate="{StaticResource GrupsTemplate}" HorizontalAlignment="Left" Height="217" Margin="10,372,0,0" VerticalAlignment="Top" Width="480"/>
+            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="59,594,0,0" VerticalAlignment="Top" Width="133" Click="btnFiltreData_Click"/>
+            <Button x:Name="btnEsborrar" Content="Esborrar Torneig" HorizontalAlignment="Left" Margin="311,658,0,0" VerticalAlignment="Top" Click="btnEsborrar_Click"/>
+            <Button x:Name="btnTancar" Content="Tancar Torneig" HorizontalAlignment="Left" Margin="59,658,0,0" VerticalAlignment="Top" Width="123" Click="btnTancar_Click"/>
+            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="197,594,0,0" VerticalAlignment="Top" Width="110" Click="btnFiltreEstat_Click"/>
+            <Button x:Name="btnEliminarFiltres" Content="Elimina filtre" HorizontalAlignment="Left" Margin="312,594,0,0" VerticalAlignment="Top" Width="127" Click="btnEliminarFiltres_Click"/>
 
         </Grid>
     </Grid>

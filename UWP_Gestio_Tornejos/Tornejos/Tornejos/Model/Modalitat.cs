@@ -12,6 +12,10 @@ namespace Tornejos.Model
         public Int64 Id
         {
             get { return mId; }
+            set
+            {
+                mId = value;
+            }
         }
 
         private string mDescription;
@@ -26,6 +30,7 @@ namespace Tornejos.Model
 
         public Modalitat(Int32 mId, String mDesc)
         {
+            this.Id = mId;
             this.Description = mDesc;
         }
     }
