@@ -1,8 +1,6 @@
-SELECT i.*
-FROM inscrit i, soci s, modalitat m, estadistica_modalitat em
-LEFT JOIN soci ON soci.id = inscrit.soci_id
-LEFT JOIN estadistica_modalitat on s.id = em.soci_id
-LEFT JOIN modalitat on em.modalitat_id = m.id
-LEFT JOIN torneig on i.torneig_id = torneig.id
-where m.id = 1
-ORDER BY em.coeficient_base;
+select inscrit.* from inscrit
+inner join soci on inscrit.soci_id = soci.id 
+left join estadistica_modalitat on estadistica_modalitat.soci_id = soci.id
+where inscrit.torneig_id = 3 and inscrit.grup_num = NULL and estadistica_modalitat.modalitat_id = 1 
+order by estadistica_modalitat.coeficient_base desc
+

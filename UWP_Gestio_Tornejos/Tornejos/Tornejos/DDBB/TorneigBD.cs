@@ -107,7 +107,7 @@ namespace Tornejos.DDBB
             return tornejos;
         }
 
-        public static ObservableCollection<Inscrit> selectInscritDeUnTorneig(Int32 idTorneig)
+        public static ObservableCollection<Inscrit> selectInscritsDeUnTorneig(Int32 idTorneig)
         {
             DateTime data;
             ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
@@ -118,7 +118,7 @@ namespace Tornejos.DDBB
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
 
-                    consulta.CommandText = @"select * from inscrit where torneig_id = @idTorneig";
+                    consulta.CommandText = @"select inscrit.* from inscrit inner join soci on inscrit.soci_id = soci.id left join estadistica_modalitat on estadistica_modalitat.soci_id = soci.id where inscrit.torneig_id = @idTorneig and inscrit.grup_num is NULL and estadistica_modalitat.modalitat_id = 1 order by estadistica_modalitat.coeficient_base desc";
                     UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
 
                     MySqlDataReader reader = consulta.ExecuteReader();
@@ -715,6 +715,34 @@ namespace Tornejos.DDBB
                 }
             }
             return s;
+        }
+
+        internal static void updateInscritEnUnGrup(Inscrit i, Grup g)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+                    consulta.CommandText = @"update inscrit set grup_num = @grupNum where soci_id = @idSoci and torneig_id = @idTorneig";
+
+                    UtilsDB.AddParameter(consulta, "grupNum", g.Num, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idTorneig", i.Torneig.Id, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idSoci", i.Soci.Id, MySqlDbType.Int32);
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
         }
 
 

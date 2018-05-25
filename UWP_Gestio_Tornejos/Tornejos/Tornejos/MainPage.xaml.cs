@@ -62,7 +62,7 @@ namespace Tornejos
                     ponerCamposEnabledDisabled(true);
                     lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                     lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
-                    lvInscrits.ItemsSource = TorneigBD.selectInscritDeUnTorneig(t.Id);
+                    lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
                     return;
                 }
 
@@ -76,7 +76,7 @@ namespace Tornejos
 
                 lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                 lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
-                lvInscrits.ItemsSource = TorneigBD.selectInscritDeUnTorneig(t.Id);
+                lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
             }
         }
 
@@ -201,18 +201,6 @@ namespace Tornejos
             return data.Year + "-" + data.Month + "-" + data.Day;
         }
 
-        private async void DisplayError(String title, String content)
-        {
-            ContentDialog noWifiDialog = new ContentDialog
-            {
-                Title = title,
-                Content = content,
-                PrimaryButtonText = "Ok"
-            };
-
-            ContentDialogResult result = await noWifiDialog.ShowAsync();
-        }
-
         private void btnEsborrar_Click(object sender, RoutedEventArgs e)
         {
             Torneig t = (Torneig)lvTornejos.SelectedItem;
@@ -258,7 +246,7 @@ namespace Tornejos
                 }
                 catch (Exception ex)
                 {
-                    DisplayError("Error", ex.Message);
+                    DisplayError("Error", "Número d'entrades incorrecte");
                     return;
                 }
 
@@ -268,7 +256,7 @@ namespace Tornejos
                 }
                 catch (Exception ex)
                 {
-                    DisplayError("Error", ex.Message);
+                    DisplayError("Error", "Número de caramboles incorrecte");
                     return;
                 }
 
@@ -277,6 +265,21 @@ namespace Tornejos
                 Grup g = new Grup(contadorGrups, txtNomGrup.Text, caramboles, entrades, tor);
                 TorneigBD.insertGrupAUnTorneig(t.Id, g);
                 lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+            }
+        }
+
+        private void btnAfegirInscritAGrup_Click(object sender, RoutedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+            if (lvGrupsDisponibles.SelectedItem == null || lvInscrits.SelectedItem == null)
+            {
+                DisplayError("Error", "Selecciona un inscrit i un grup");
+            }else
+            {
+                Grup g = (Grup)lvGrupsDisponibles.SelectedItem;
+                Inscrit i = (Inscrit)lvInscrits.SelectedItem;
+                TorneigBD.updateInscritEnUnGrup(i, g);
+                lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
             }
         }
 
@@ -300,6 +303,18 @@ namespace Tornejos
                 TorneigBD.EsborrarTorneig(idTorneig);
                 lvTornejos.ItemsSource = TorneigBD.selectTornejos();
             }
+        }
+
+        private async void DisplayError(String title, String content)
+        {
+            ContentDialog noWifiDialog = new ContentDialog
+            {
+                Title = title,
+                Content = content,
+                PrimaryButtonText = "Ok"
+            };
+
+            ContentDialogResult result = await noWifiDialog.ShowAsync();
         }
     }
 }
