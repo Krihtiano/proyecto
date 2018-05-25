@@ -16,15 +16,15 @@ INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES
 INSERT INTO torneig (nom, data_inici, data_finalitzacio, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar II', '2018-05-16', '2018-05-10', false, 2);
 INSERT INTO torneig (nom, data_inici, preinscripcio_oberta, modalitat_id) VALUES ('Gran Torneig Billar III', '2018-05-17', true, 3);
 
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup A', 10, 10, 1);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup A', 20, 20, 1);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (3,'Grup A', 30, 30, 1);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup B', 10, 10, 2);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup B', 20, 20, 2);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (3,'Grup B', 30, 30, 2);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup C', 10, 10, 3);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup C', 20, 20, 3);
-INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (3,'Grup C', 30, 30, 3);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (0,'Grup 1', 10, 10, 1);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup 2', 20, 20, 1);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup 3', 30, 30, 1);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (0,'Grup 1', 10, 10, 2);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup 2', 20, 20, 2);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup 3', 30, 30, 2);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (0,'Grup 1', 10, 10, 3);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup 2', 20, 20, 3);
+INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup 3', 30, 30, 3);
 
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 1, 1, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 2, 2, '2018-05-14');

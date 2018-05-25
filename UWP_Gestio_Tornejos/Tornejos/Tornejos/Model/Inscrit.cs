@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tornejos.DDBB;
 
 namespace Tornejos.Model
 {
@@ -57,6 +58,14 @@ namespace Tornejos.Model
             get { return mData; }
         }
 
+        public String NomCognoms
+        {
+            get
+            {
+                return Soci.Nom + " " + Soci.Cognom + " " + Soci.Cognom2;
+            }
+            set { }
+        }
 
     }
 }

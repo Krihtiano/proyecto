@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Roots >
   <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="NomCognoms" />
+    <RootPropertyPathName Name="NumDesc" />
     <RootPropertyPathName Name="TotalPartidasJugadasTotal" />
     <RootPropertyPathName Name="Informacio" />
   </Roots.PropertyPathNames>
@@ -70,6 +72,7 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Width" />
       <RootProperty Name="IsEnabled" />
+      <RootProperty Name="Background" />
       <RootEvent Name="SelectionChanged" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />

@@ -52,11 +52,44 @@ namespace Tornejos
             if (t == null)
             {
                 lvGrups.ItemsSource = null;
+                lvGrupsDisponibles.ItemsSource = null;
+                lvInscrits.ItemsSource = null;
             }
             else
             {
+                if(t.DataFinalitzacio == null || t.DataFinalitzacio.Year == 0001) 
+                {
+                    ponerCamposEnabledDisabled(true);
+                    lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+                    lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+                    lvInscrits.ItemsSource = TorneigBD.selectInscritDeUnTorneig(t.Id);
+                    return;
+                }
+
+                if (t.DataFinalitzacio <= DateTime.Now || (t.DataFinalitzacio.Day == DateTime.Now.Day && t.DataFinalitzacio.Month == DateTime.Now.Month && t.DataFinalitzacio.Year == DateTime.Now.Year))
+                {
+                    ponerCamposEnabledDisabled(false);
+                }else
+                {
+                    ponerCamposEnabledDisabled(true);
+                }
+
                 lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+                lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
+                lvInscrits.ItemsSource = TorneigBD.selectInscritDeUnTorneig(t.Id);
             }
+        }
+
+        private void ponerCamposEnabledDisabled(bool b)
+        {
+            
+            lvInscrits.IsEnabled = b;
+            lvGrupsDisponibles.IsEnabled = b;
+            txtCarambolesGrup.IsEnabled = b;
+            txtLimitEntradesGrup.IsEnabled = b;
+            txtNomGrup.IsEnabled = b;
+            btnCrearGrup.IsEnabled = b;
+
         }
 
         private void btnFiltreEstat_Click(object sender, RoutedEventArgs e)
@@ -197,6 +230,53 @@ namespace Tornejos
                     TorneigBD.EsborrarGrupsDeUnTorneig(t.Id);
                     TorneigBD.EsborrarTorneig(t.Id);
                 }
+            }
+        }
+
+        private void lvInscrits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btnCrearGrup_Click(object sender, RoutedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+
+            if (t != null)
+            {
+                Int32 caramboles, entrades;
+
+                if (!(txtNomGrup.Text.Length >= 2 || txbTitol.Text.Length > 30))
+                {
+                    DisplayError("Error", "El nom del grup es incorrecte (2-30 caracters)");
+                    return;
+                }
+
+                try
+                {
+                    entrades = Int32.Parse(txtLimitEntradesGrup.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", ex.Message);
+                    return;
+                }
+
+                try
+                {
+                    caramboles = Int32.Parse(txtCarambolesGrup.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", ex.Message);
+                    return;
+                }
+
+                Int32 contadorGrups = TorneigBD.selectTotalGrupsPerTorneig(t.Id);
+                Torneig tor = TorneigBD.selectTorneigPerId(t.Id);
+                Grup g = new Grup(contadorGrups, txtNomGrup.Text, caramboles, entrades, tor);
+                TorneigBD.insertGrupAUnTorneig(t.Id, g);
+                lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
             }
         }
 

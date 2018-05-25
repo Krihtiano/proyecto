@@ -107,6 +107,57 @@ namespace Tornejos.DDBB
             return tornejos;
         }
 
+        public static ObservableCollection<Inscrit> selectInscritDeUnTorneig(Int32 idTorneig)
+        {
+            DateTime data;
+            ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+                    consulta.CommandText = @"select * from inscrit where torneig_id = @idTorneig";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inscrit i;
+
+                        Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
+                        Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
+                        Int32 numG = -1;
+                        try
+                        {
+                            numG = reader.GetInt32(reader.GetOrdinal("grup_num"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        data = reader.GetDateTime(reader.GetOrdinal("data"));
+
+                        Soci s = TorneigBD.selectSociPerId(idS);
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        if(numG != -1)
+                        {
+                            Grup g = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
+                            i = new Inscrit(s, t, g, data);
+                            inscrits.Add(i);
+                        }else {
+                            i = new Inscrit(s, t, null, data);
+                            inscrits.Add(i);
+                        }
+
+                    }
+
+                }
+            }
+            return inscrits;
+        }
+
         internal static Int32 selectTotalPartidesPerTorneig(int id)
         {
             using (MySqlConnection connexio = MySQL.GetConnexio())
@@ -114,7 +165,6 @@ namespace Tornejos.DDBB
                 connexio.Open();
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
-
                     consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig";
                     UtilsDB.AddParameter(consulta, "idTorneig", id, MySqlDbType.Int32);
 
@@ -203,6 +253,26 @@ namespace Tornejos.DDBB
             }
         }
 
+        internal static void insertGrupAUnTorneig(int id, Grup g)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (@GrupNum, @desc, @caramboles, @entrades, @idTorneig);";
+                    UtilsDB.AddParameter(consulta, "GrupNum", g.Num, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "desc", g.Description, MySqlDbType.String);
+                    UtilsDB.AddParameter(consulta, "caramboles", g.Caramboles_victoria, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "entrades", g.Limit_entrades, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idTorneig", id, MySqlDbType.Int32);
+                    consulta.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
         public static ObservableCollection<Grup> selectGrupsDeUnTorneig(Int32 idTorneig)
         {
             ObservableCollection<Grup> grups = new ObservableCollection<Grup>();
@@ -223,7 +293,7 @@ namespace Tornejos.DDBB
                         string description = reader.GetString(reader.GetOrdinal("description"));
                         Int32 carambolesVictoria = reader.GetInt32(reader.GetOrdinal("caramboles_victoria"));
                         Int32 limitEntrades = reader.GetInt32(reader.GetOrdinal("limit_entrades"));
-                        Torneig t = TorneigBD.selectToreigPerId(idTorneig);
+                        Torneig t = TorneigBD.selectTorneigPerId(idTorneig);
                         Grup g = new Grup(num, description, carambolesVictoria, limitEntrades, t);
 
                         grups.Add(g);
@@ -234,7 +304,7 @@ namespace Tornejos.DDBB
             return grups;
         }
 
-        private static Torneig selectToreigPerId(int idTorneig)
+        public static Torneig selectTorneigPerId(int idTorneig)
         {
             Torneig t = null;
             using (MySqlConnection connexio = MySQL.GetConnexio())
@@ -586,6 +656,67 @@ namespace Tornejos.DDBB
                 }
             }
         }
+
+        private static Grup selectGrupDeUnTorneigIUnGrup(int idT, int numG)
+        {
+            Grup g = null;
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+                    consulta.CommandText = @"select * from grup where torneig_id = @idTorneig and num = @numGrup";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idT, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", numG, MySqlDbType.Int32);
+                    MySqlDataReader reader = consulta.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Int32 num = reader.GetInt32(reader.GetOrdinal("num"));
+                        string description = reader.GetString(reader.GetOrdinal("description"));
+                        Int32 carambolesVictoria = reader.GetInt32(reader.GetOrdinal("caramboles_victoria"));
+                        Int32 limitEntrades = reader.GetInt32(reader.GetOrdinal("limit_entrades"));
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        g = new Grup(num, description, carambolesVictoria, limitEntrades, t);
+
+                    }
+                }
+            }
+            return g;
+        }
+
+        private static Soci selectSociPerId(int idS)
+        {
+            Soci s = null;
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"select * from soci s where s.Id = @sId";
+                    UtilsDB.AddParameter(consulta, "sId", idS, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
+                        string nif = reader.GetString(reader.GetOrdinal("nif"));
+                        string nom = reader.GetString(reader.GetOrdinal("nom"));
+                        string cognom1 = reader.GetString(reader.GetOrdinal("cognom1"));
+                        string cognom2 = reader.GetString(reader.GetOrdinal("cognom2"));
+                        DateTime dataAlta = reader.GetDateTime(reader.GetOrdinal("data_alta"));
+                        string passwordHash = reader.GetString(reader.GetOrdinal("password_hash"));
+                        Int32 actiu = reader.GetInt32(reader.GetOrdinal("actiu"));
+                        s = new Soci(id, nif, nom, cognom1, cognom2, dataAlta, passwordHash, actiu);
+                    }
+
+                }
+            }
+            return s;
+        }
+
 
         public static String getDataSQLFromDateTime(DateTime data)
         {

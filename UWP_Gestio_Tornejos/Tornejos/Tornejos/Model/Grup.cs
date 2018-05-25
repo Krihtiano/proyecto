@@ -77,5 +77,19 @@ namespace Tornejos.Model
             set { }
         }
 
+        public String NumDesc
+        {
+            get
+            {
+                String resultado = this.Num + "";
+
+                resultado = resultado + ": " + Description;
+
+                return resultado;
+            }
+            set { }
+        }
+        
+
     }
 }
