@@ -7,7 +7,7 @@ using Tornejos.DDBB;
 
 namespace Tornejos.Model
 {
-    class Torneig
+    public class Torneig
     {
 
         public Torneig(Int32 mId, String mNom, DateTime mDataInici, DateTime mDataFinalitzacio, Int32 mPreinscripcioOberta, Modalitat mModalitat)

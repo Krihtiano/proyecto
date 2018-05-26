@@ -26,15 +26,17 @@ INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig
 INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (1,'Grup 2', 20, 20, 3);
 INSERT INTO grup (num, description, caramboles_victoria, limit_entrades, torneig_id) VALUES (2,'Grup 3', 30, 30, 3);
 
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 1, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 2, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 1, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 2, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 1, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 2, null, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 3, null, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 1, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 2, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 3, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 1, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 2, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 3, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 1, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 2, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 3, 0, '2018-05-14');
 
 INSERT INTO partida (caramboles_a, caramboles_b, data, num_entrades, taula_id, torneig_id, grup_num, inscrit_a, inscrit_b, estat_partida) VALUES (3, 5, '2018-05-15', 8, 1, 1, 1, 1, 2, 'pendent');
-INSERT INTO partida (caramboles_a, caramboles_b, data, num_entrades, taula_id, torneig_id, grup_num, inscrit_a, inscrit_b, motiu_victoria, guanyador, estat_partida) VALUES (6, 3, '2018-05-15', 9, 2, 2, 2, 1, 2, 'abandonament', 'A', 'jugada');
+INSERT INTO partida (caramboles_a, caramboles_b, data, num_entrades, taula_id, torneig_id, grup_num, inscrit_a, inscrit_b, motiu_victoria, guanyador, estat_partida) VALUES (6, 3, '2018-05-15', 9, 1, 1, 0, 1, 2, 'abandonament', 'A', 'jugada');
 INSERT INTO partida (caramboles_a, caramboles_b, data, num_entrades, taula_id, torneig_id, grup_num, inscrit_a, inscrit_b, estat_partida) VALUES (2, 3, '2018-05-15', 5, 3, 1, 1, 1, 2, 'pendent');
 

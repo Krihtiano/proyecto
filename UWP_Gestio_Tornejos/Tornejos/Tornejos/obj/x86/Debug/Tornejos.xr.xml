@@ -4,6 +4,7 @@
     <RootPropertyPathName Name="NomCognoms" />
     <RootPropertyPathName Name="NumDesc" />
     <RootPropertyPathName Name="TotalPartidasJugadasTotal" />
+    <RootPropertyPathName Name="Id" />
     <RootPropertyPathName Name="Informacio" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
@@ -42,6 +43,7 @@
     <RootType FullName="Windows.UI.Xaml.Controls.Button">
       <RootProperty Name="Margin" />
       <RootProperty Name="Width" />
+      <RootProperty Name="Tag" />
       <RootProperty Name="Content" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
@@ -62,6 +64,7 @@
       <RootProperty Name="Width" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.Pivot">
+      <RootProperty Name="Name" />
       <RootProperty Name="Items" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
@@ -72,6 +75,8 @@
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Width" />
       <RootProperty Name="IsEnabled" />
+      <RootProperty Name="HorizontalContentAlignment" />
+      <RootProperty Name="VerticalContentAlignment" />
       <RootProperty Name="Background" />
       <RootEvent Name="SelectionChanged" />
     </RootType>
@@ -79,6 +84,7 @@
     <RootType FullName="Windows.UI.Xaml.Controls.PivotItem">
       <RootProperty Name="Header" />
       <RootProperty Name="Content" />
+      <RootProperty Name="Name" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="HorizontalAlignment" />

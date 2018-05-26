@@ -28,13 +28,13 @@
     <AppXManifest Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-25T23:09:03.768</Modified>
+      <Modified>2018-05-26T18:28:54.380</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Tornejos.exe">
       <PackagePath>entrypoint\Tornejos.exe</PackagePath>
-      <Modified>2018-05-25T23:09:03.508</Modified>
+      <Modified>2018-05-26T18:28:53.456</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Cristian\.nuget\packages\Microsoft.CSharp\4.0.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -492,7 +492,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Tornejos.xr.xml">
       <PackagePath>Tornejos.xr.xml</PackagePath>
-      <Modified>2018-05-25T19:17:59.063</Modified>
+      <Modified>2018-05-26T15:56:46.002</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -501,11 +501,11 @@
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-25T22:56:00.429</Modified>
+      <Modified>2018-05-26T17:48:40.889</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\Tornejos.exe">
       <PackagePath>Tornejos.exe</PackagePath>
-      <Modified>2018-05-25T23:09:03.763</Modified>
+      <Modified>2018-05-26T18:28:54.302</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

@@ -16,10 +16,10 @@
                     <TextBlock x:Name="txbDataTornejos" Text="{Binding Informacio}" Width="300"/>
                 </Border>
                 <StackPanel Orientation="Horizontal" Width="110">
-                    <Button x:Name="btnClassificacio" Margin="2" Width="50" Click="btnClassificacio_Click">
+                    <Button x:Name="btnClassificacio" Margin="2" Width="50" Click="btnClassificacio_Click" Tag="{Binding Id}">
                         <SymbolIcon Symbol="ZeroBars"/>
                     </Button>
-                    <Button x:Name="btnEntradaResultats" Margin="2" Width="50" Click="btnEntradaResultats_Click">
+                    <Button x:Name="btnEntradaResultats" Margin="2" Width="50" Click="btnEntradaResultats_Click" Tag="{Binding Id}">
                         <SymbolIcon Symbol="ContactInfo"/>
                     </Button>
                 </StackPanel>
@@ -52,6 +52,8 @@
             </StackPanel>
         </DataTemplate>
 
+
+
     </Page.Resources>
 
 
@@ -61,11 +63,11 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="500"></ColumnDefinition>
+                <ColumnDefinition Width="450"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Pivot Grid.Column="1">
+            <Pivot Name="Pivote" Grid.Column="1">
                 <PivotItem Header="Tornejos">
                     <Grid>
                         <TextBox x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,288,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="320" Height="4"/>
@@ -96,13 +98,16 @@
 
                     </Grid>
                 </PivotItem>
-                <PivotItem Header="Classificació">
+                <PivotItem Name="Classificacio" Header="Classificació">
                     <Grid>
+                        <ListView x:Name="lvClassificacioGrups" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Height="632" VerticalContentAlignment="Stretch" Width="716" Margin="0,10">
+
+                        </ListView>
 
 
                     </Grid>
                 </PivotItem>
-                <PivotItem Header="Entrada de resultats">
+                <PivotItem Name="Resultats" Header="Entrada de resultats">
                     <Grid>
 
 
@@ -116,13 +121,13 @@
                 </PivotItem>
             </Pivot>
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="122,8,0,0" TextWrapping="Wrap" Text="Llistat de Tornejos" VerticalAlignment="Top" FontSize="20"/>
-            <ListView x:Name="lvTornejos" SelectionChanged="lvTornejos_SelectionChanged" ItemTemplate="{StaticResource TornejosTemplate}" HorizontalAlignment="Left" Height="325" Margin="10,42,0,0" VerticalAlignment="Top" Width="480"/>
-            <ListView x:Name="lvGrups" IsEnabled="False" ItemTemplate="{StaticResource GrupsTemplate}" HorizontalAlignment="Left" Height="217" Margin="10,372,0,0" VerticalAlignment="Top" Width="480"/>
-            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="59,594,0,0" VerticalAlignment="Top" Width="133" Click="btnFiltreData_Click"/>
-            <Button x:Name="btnEsborrar" Content="Esborrar Torneig" HorizontalAlignment="Left" Margin="311,658,0,0" VerticalAlignment="Top" Click="btnEsborrar_Click"/>
-            <Button x:Name="btnTancar" Content="Tancar Torneig" HorizontalAlignment="Left" Margin="59,658,0,0" VerticalAlignment="Top" Width="123" Click="btnTancar_Click"/>
-            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="197,594,0,0" VerticalAlignment="Top" Width="110" Click="btnFiltreEstat_Click"/>
-            <Button x:Name="btnEliminarFiltres" Content="Elimina filtre" HorizontalAlignment="Left" Margin="312,594,0,0" VerticalAlignment="Top" Width="127" Click="btnEliminarFiltres_Click"/>
+            <ListView x:Name="lvTornejos" SelectionChanged="lvTornejos_SelectionChanged" ItemTemplate="{StaticResource TornejosTemplate}" HorizontalAlignment="Left" Height="325" Margin="10,42,0,0" VerticalAlignment="Top" Width="430"/>
+            <ListView x:Name="lvGrups" IsEnabled="False" ItemTemplate="{StaticResource GrupsTemplate}" HorizontalAlignment="Left" Height="217" Margin="10,372,0,0" VerticalAlignment="Top" Width="430"/>
+            <Button x:Name="btnFiltreData" Content="Data ascendent" HorizontalAlignment="Left" Margin="35,594,0,0" VerticalAlignment="Top" Width="133" Click="btnFiltreData_Click"/>
+            <Button x:Name="btnEsborrar" Content="Esborrar Torneig" HorizontalAlignment="Left" Margin="287,658,0,0" VerticalAlignment="Top" Click="btnEsborrar_Click"/>
+            <Button x:Name="btnTancar" Content="Tancar Torneig" HorizontalAlignment="Left" Margin="35,658,0,0" VerticalAlignment="Top" Width="123" Click="btnTancar_Click"/>
+            <Button x:Name="btnFiltreEstat" Content="Estat obert" HorizontalAlignment="Left" Margin="173,594,0,0" VerticalAlignment="Top" Width="110" Click="btnFiltreEstat_Click"/>
+            <Button x:Name="btnEliminarFiltres" Content="Elimina filtre" HorizontalAlignment="Left" Margin="288,594,0,0" VerticalAlignment="Top" Width="127" Click="btnEliminarFiltres_Click"/>
 
         </Grid>
     </Grid>

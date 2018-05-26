@@ -8,7 +8,7 @@ using Tornejos.DDBB;
 
 namespace Tornejos.Model
 {
-    class Grup
+    public class Grup
     {
         /*
          * num int(11) NOT NULL,

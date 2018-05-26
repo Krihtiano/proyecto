@@ -155,11 +155,35 @@ namespace Tornejos
 
         private void btnClassificacio_Click(object sender, RoutedEventArgs e)
         {
+            lvClassificacioGrups.Items.Clear();
+            Button b = (Button)sender;
+            int index = (int)b.Tag;
+            Pivote.SelectedItem =Classificacio;
+            ObservableCollection<Grup> grups = TorneigBD.selectGrupsDeUnTorneig(index);
+            for(int i = 0; i < grups.Count; i++)
+            {
+                ListView lv = new ListView();
+                Grup g = grups[i];
+                String grupIdNom = (g.Num + 1) + " " + g.Description;
+                Grid grid = generarTablaClassificacio(g, index);
+
+                lvClassificacioGrups.Items.Add(grupIdNom);
+                lvClassificacioGrups.Items.Add(grid);
+
+
+            }
+
 
         }
 
         private void btnEntradaResultats_Click(object sender, RoutedEventArgs e)
         {
+            Button b = (Button)sender;
+            int index = (int)b.Tag;
+            Pivote.SelectedItem = Resultats;
+
+
+
 
         }
 
@@ -315,6 +339,137 @@ namespace Tornejos
             };
 
             ContentDialogResult result = await noWifiDialog.ShowAsync();
+        }
+
+        public Grid generarTablaClassificacio(Grup g, Int32 idTorneig)
+        {
+            ObservableCollection<Inscrit> inscrits = TorneigBD.selectInscritsDeUnTorneigIGrup(idTorneig, g);
+
+            Grid grid = new Grid();
+            grid.Width = 650;
+            grid.Height = 50 + (inscrits.Count * 50);
+
+            ColumnDefinition posicio = new ColumnDefinition();
+            ColumnDefinition nomJugador = new ColumnDefinition();
+            ColumnDefinition partidesJugades = new ColumnDefinition();
+            ColumnDefinition partidesGuanyades = new ColumnDefinition();
+            ColumnDefinition partidesPerdudes = new ColumnDefinition();
+            ColumnDefinition coeficient = new ColumnDefinition();
+            RowDefinition rd = new RowDefinition();
+            grid.RowDefinitions.Add(rd);
+
+            posicio.Width = new GridLength(0, GridUnitType.Auto);
+            nomJugador.Width = new GridLength(0, GridUnitType.Auto);
+            partidesJugades.Width = new GridLength(0, GridUnitType.Auto);
+            partidesGuanyades.Width = new GridLength(0, GridUnitType.Auto);
+            partidesPerdudes.Width = new GridLength(0, GridUnitType.Auto);
+            coeficient.Width = new GridLength(0, GridUnitType.Auto);
+
+            grid.ColumnDefinitions.Add(posicio);
+            grid.ColumnDefinitions.Add(nomJugador);
+            grid.ColumnDefinitions.Add(partidesJugades);
+            grid.ColumnDefinitions.Add(partidesGuanyades);
+            grid.ColumnDefinitions.Add(partidesPerdudes);
+            grid.ColumnDefinitions.Add(coeficient);
+
+            TextBox tPosicio = new TextBox();
+            tPosicio.IsEnabled = false;
+            tPosicio.Text = "Posicio";
+
+            TextBox tNomJugador = new TextBox();
+            tNomJugador.IsEnabled = false;
+            tNomJugador.Text = "Nom jugador";
+
+            TextBox tPartidesJugades = new TextBox();
+            tPartidesJugades.IsEnabled = false;
+            tPartidesJugades.Text = "Partides jug.";
+
+            TextBox tPartidesGuanyades = new TextBox();
+            tPartidesGuanyades.IsEnabled = false;
+            tPartidesGuanyades.Text = "Partides guanyades";
+
+            TextBox tPartidesPerdudes = new TextBox();
+            tPartidesPerdudes.IsEnabled = false;
+            tPartidesPerdudes.Text = "Partides perdudes";
+
+            TextBox tCoeficient = new TextBox();
+            tCoeficient.IsEnabled = false;
+            tCoeficient.Text = "Coeficient";
+
+            grid.Children.Add(tPosicio);
+            grid.Children.Add(tNomJugador);
+            grid.Children.Add(tPartidesJugades);
+            grid.Children.Add(tPartidesGuanyades);
+            grid.Children.Add(tPartidesPerdudes);
+            grid.Children.Add(tCoeficient);
+
+            Grid.SetColumn(tPosicio, 0);
+            Grid.SetRow(tPosicio, 0);
+            Grid.SetColumn(tNomJugador, 1);
+            Grid.SetRow(tNomJugador, 0);
+            Grid.SetColumn(tPartidesJugades, 2);
+            Grid.SetRow(tPartidesJugades, 0);
+            Grid.SetColumn(tPartidesGuanyades, 3);
+            Grid.SetRow(tPartidesGuanyades, 0);
+            Grid.SetColumn(tPartidesPerdudes, 4);
+            Grid.SetRow(tPartidesPerdudes, 0);
+            Grid.SetColumn(tCoeficient, 5);
+            Grid.SetRow(tCoeficient, 0);
+
+            for (int i = 0; i < inscrits.Count; i++)
+            {
+                RowDefinition r = new RowDefinition();
+                grid.RowDefinitions.Add(r);
+
+                //Posicio
+                TextBox tiPosicio = new TextBox();
+                tiPosicio.IsEnabled = false;
+                tiPosicio.Text = ("" +(i+1));
+                grid.Children.Add(tiPosicio);
+                Grid.SetColumn(tiPosicio, 0);
+                Grid.SetRow(tiPosicio, i+1);
+
+                //Nom Jugador
+                TextBox tiNomJugador = new TextBox();
+                tiNomJugador.IsEnabled = false;
+                tiNomJugador.Text = inscrits[i].Soci.Nom;
+                grid.Children.Add(tiNomJugador);
+                Grid.SetColumn(tiNomJugador, 1);
+                Grid.SetRow(tiNomJugador, i + 1);
+
+                //Partides Jugades
+                TextBox tiPartidesJugades = new TextBox();
+                tiPartidesJugades.IsEnabled = false;
+                tiPartidesJugades.Text = "" + TorneigBD.selectPartidesJugadesDeUnInscrit(idTorneig, g.Num, inscrits[i]);
+                grid.Children.Add(tiPartidesJugades);
+                Grid.SetColumn(tiPartidesJugades, 2);
+                Grid.SetRow(tiPartidesJugades, i + 1);
+
+
+                TextBox tiPartidesGuanyades = new TextBox();
+                tiPartidesGuanyades.IsEnabled = false;
+                tiPartidesGuanyades.Text = "" + TorneigBD.selectPartidesGuanyadesDeUnInscrit(idTorneig, g.Num, inscrits[i]); 
+                grid.Children.Add(tiPartidesGuanyades);
+                Grid.SetColumn(tiPartidesGuanyades, 3);
+                Grid.SetRow(tiPartidesGuanyades, i + 1);
+
+                TextBox tiPartidesPerdudes = new TextBox();
+                tiPartidesPerdudes.IsEnabled = false;
+                tiPartidesPerdudes.Text = "" + TorneigBD.selectPartidesPerdudesDeUnInscrit(idTorneig, g.Num, inscrits[i]); ;
+                grid.Children.Add(tiPartidesPerdudes);
+                Grid.SetColumn(tiPartidesPerdudes, 4);
+                Grid.SetRow(tiPartidesPerdudes, i + 1);
+
+                TextBox tiCoeficient = new TextBox();
+                tiCoeficient.IsEnabled = false;
+                tiCoeficient.Text = "" + TorneigBD.selectCoeficientDeUnInscrit(inscrits[i]);
+                grid.Children.Add(tiCoeficient);
+                Grid.SetColumn(tiCoeficient, 5);
+                Grid.SetRow(tiCoeficient, i + 1);
+
+            }
+
+            return grid;
         }
     }
 }

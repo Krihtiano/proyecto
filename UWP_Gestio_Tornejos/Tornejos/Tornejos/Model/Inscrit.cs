@@ -7,7 +7,7 @@ using Tornejos.DDBB;
 
 namespace Tornejos.Model
 {
-    class Inscrit
+    public class Inscrit
     {
         /*soci_id int(11) NOT NULL,
           torneig_id int(11) NOT NULL,
@@ -66,6 +66,5 @@ namespace Tornejos.Model
             }
             set { }
         }
-
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tornejos.Model
 {
-    class Soci
+    public class Soci
     {
         /*id int(11) NOT NULL AUTO_INCREMENT,
           nif varchar(9) NOT NULL,

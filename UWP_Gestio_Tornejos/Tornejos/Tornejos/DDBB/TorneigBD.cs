@@ -66,6 +66,28 @@ namespace Tornejos.DDBB
             return m;
         }
 
+        public static float selectCoeficientDeUnInscrit(Inscrit i)
+        {
+            float coeficient = 0;
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"select coeficient_base from estadistica_modalitat inner join soci on estadistica_modalitat.soci_id = soci.id left join inscrit on inscrit.soci_id = soci.id where estadistica_modalitat.modalitat_id = 1 and soci.id = @sociId";
+                    UtilsDB.AddParameter(consulta, "sociId", i.Soci.Id, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        coeficient = reader.GetFloat(reader.GetOrdinal("coeficient_base"));
+
+                    }
+                }
+            }
+            return coeficient;
+        }
+
         public static ObservableCollection<Torneig> selectTornejos()
         {
             ObservableCollection<Torneig> tornejos = new ObservableCollection<Torneig>();
@@ -151,6 +173,59 @@ namespace Tornejos.DDBB
                             inscrits.Add(i);
                         }
 
+                    }
+
+                }
+            }
+            return inscrits;
+        }
+
+        public static ObservableCollection<Inscrit> selectInscritsDeUnTorneigIGrup(Int32 idTorneig, Grup g)
+        {
+            DateTime data;
+            ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+                    consulta.CommandText = @"select inscrit.* from inscrit where inscrit.torneig_id = @idTorneig and inscrit.grup_num = @numGrup";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", g.Num, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inscrit i;
+
+                        Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
+                        Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
+                        Int32 numG = -1;
+                        try
+                        {
+                            numG = reader.GetInt32(reader.GetOrdinal("grup_num"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        data = reader.GetDateTime(reader.GetOrdinal("data"));
+
+                        Soci s = TorneigBD.selectSociPerId(idS);
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        if (numG != -1)
+                        {
+                            Grup gr = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
+                            i = new Inscrit(s, t, gr, data);
+                            inscrits.Add(i);
+                        }
+                        else
+                        {
+                            i = new Inscrit(s, t, null, data);
+                            inscrits.Add(i);
+                        }
                     }
 
                 }
@@ -341,6 +416,60 @@ namespace Tornejos.DDBB
                 }
             }
             return t;
+        }
+
+        internal static Int32 selectPartidesJugadesDeUnInscrit(int idTorneig, int num, Inscrit inscrit)
+        {
+            Int32 contador = 0;
+                using (MySqlConnection connexio = MySQL.GetConnexio())
+                {
+                    connexio.Open();
+                    using (MySqlCommand consulta = connexio.CreateCommand())
+                    {
+                        consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig and grup_num = @numGrup and (inscrit_a = @idSoci or inscrit_b = @idSoci) and estat_partida = 'jugada'";
+                        UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                        UtilsDB.AddParameter(consulta, "numGrup", num, MySqlDbType.Int32);
+                        UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
+
+                    return ((Int32)(long)consulta.ExecuteScalar());
+                    }
+                }
+        }
+
+        internal static Int32 selectPartidesGuanyadesDeUnInscrit(int idTorneig, int num, Inscrit inscrit)
+        {
+            Int32 contador = 0;
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig and grup_num = @numGrup and (inscrit_a = @idSoci and guanyador = 'A') or (inscrit_b = @idSoci and guanyador = 'B') and estat_partida = 'jugada'";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", num, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
+
+                    return ((Int32)(long)consulta.ExecuteScalar());
+                }
+            }
+        }
+
+        internal static Int32 selectPartidesPerdudesDeUnInscrit(int idTorneig, int num, Inscrit inscrit)
+        {
+            Int32 contador = 0;
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig and grup_num = @numGrup and (inscrit_a = @idSoci and guanyador = 'B') or (inscrit_b = @idSoci and guanyador = 'A') and estat_partida = 'jugada'";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", num, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
+
+                    return ((Int32)(long)consulta.ExecuteScalar());
+                }
+            }
         }
 
         internal static object selectTornejosFiltrados(bool data, bool estat)
