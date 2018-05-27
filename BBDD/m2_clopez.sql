@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS torneig (
   data_inici timestamp NOT NULL,
   data_finalitzacio timestamp,
   preinscripcio_oberta int(1) NOT NULL,
+  grups_creats int(1) NOT NULL,
   modalitat_id int(11) NOT NULL,
   CONSTRAINT torneig_modalitat_id_fk FOREIGN KEY (modalitat_id) REFERENCES modalitat (id),
   PRIMARY KEY (id)
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS partida (
   caramboles_b int(11) NOT NULL,
   data timestamp,
   num_entrades int(11) NOT NULL,
-  taula_id int(11) NOT NULL,
+  taula_id int(11),
   torneig_id int(11) NOT NULL,
   grup_num int(11) NOT NULL,
   inscrit_a int(11) NOT NULL,

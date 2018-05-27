@@ -70,13 +70,13 @@
             <Pivot x:ConnectionId='3' Name="Pivote" Grid.Column="1">
                 <PivotItem Header="Tornejos">
                     <Grid>
-                        <TextBox x:ConnectionId='27' x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,288,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="320" Height="4"/>
-                        <TextBlock x:ConnectionId='28' x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="58" FontSize="20" Height="32"></TextBlock>
-                        <TextBlock x:ConnectionId='29' x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="6,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
-                        <ComboBox x:ConnectionId='30' x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="99,113,0,0" VerticalAlignment="Top" Width="289"/>
-                        <TextBlock x:ConnectionId='31' x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="6,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
-                        <DatePicker x:ConnectionId='32' x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="68,39,0,0" VerticalAlignment="Top" Width="320"/>
-                        <Button x:ConnectionId='33' x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top"                              />
+                        <TextBox x:ConnectionId='29' x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,288,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="320" Height="4"/>
+                        <TextBlock x:ConnectionId='30' x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="58" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:ConnectionId='31' x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="6,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
+                        <ComboBox x:ConnectionId='32' x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="99,113,0,0" VerticalAlignment="Top" Width="289"/>
+                        <TextBlock x:ConnectionId='33' x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="6,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
+                        <DatePicker x:ConnectionId='34' x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="68,39,0,0" VerticalAlignment="Top" Width="320"/>
+                        <Button x:ConnectionId='35' x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top"                              />
 
                     </Grid>
                 </PivotItem>
@@ -94,8 +94,8 @@
                         <TextBlock x:ConnectionId='24' x:Name="textBlockGrupName_Copy" Text="Grups disponibles" HorizontalAlignment="Left" Margin="460,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
                         <ListView x:ConnectionId='25' Background="LightGray" x:Name="lvGrupsDisponibles" HorizontalAlignment="Left" ItemTemplate="{StaticResource GrupsSimpleTemplate}" Height="215" Margin="403,276,0,0" VerticalAlignment="Top" Width="263"/>
                         <Button x:ConnectionId='26' x:Name="btnAfegirInscritAGrup" Content="Afegir" HorizontalAlignment="Left" Margin="301,365,0,0" VerticalAlignment="Top" Width="97"                                    />
-
-
+                        <Button x:ConnectionId='27' x:Name="btnTancarGrups" Content="TancarGrups" HorizontalAlignment="Left" Margin="9,526,0,0" VerticalAlignment="Top" Width="287"                             />
+                        <Button x:ConnectionId='28' x:Name="btnGenerarEncreuaments" Content="Generar encreuaments" HorizontalAlignment="Left" Margin="403,526,0,0" VerticalAlignment="Top" Width="263"                                     />
                     </Grid>
                 </PivotItem>
                 <PivotItem x:ConnectionId='12' Name="Classificacio" Header="Classificació">

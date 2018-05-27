@@ -66,7 +66,7 @@ namespace Tornejos.Model
         {  
             get
             {
-                String resultado = "Grup " + this.Num;
+                String resultado = "Grup " + (this.Num + 1);
                 Int32 idTorneig = this.Torneig.Id;
                 Int32 partidasJugadas = TorneigBD.selectCountPartidesJugadasPerIdTorneigNumGrup(idTorneig, this.Num);
                 Int32 partidasTotales = TorneigBD.selectCountPartidesTotalesPerIdTorneigNumGrup(idTorneig, this.Num);

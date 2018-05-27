@@ -10,7 +10,7 @@ namespace Tornejos.Model
     public class Torneig
     {
 
-        public Torneig(Int32 mId, String mNom, DateTime mDataInici, DateTime mDataFinalitzacio, Int32 mPreinscripcioOberta, Modalitat mModalitat)
+        public Torneig(Int32 mId, String mNom, DateTime mDataInici, DateTime mDataFinalitzacio, Int32 mPreinscripcioOberta, Modalitat mModalitat, Int32 mGrupsCreats)
         {
             this.Id = mId;
             this.Nom = mNom;
@@ -18,23 +18,26 @@ namespace Tornejos.Model
             this.DataFinalitzacio = mDataFinalitzacio;
             this.PreinscripcioOberta = mPreinscripcioOberta;
             this.Modalitat = mModalitat;
+            this.GrupsCreats = mGrupsCreats;
         }
 
-        public Torneig(Int32 mId, String mNom, DateTime mDataInici, Int32 mPreinscripcioOberta, Modalitat mModalitat)
+        public Torneig(Int32 mId, String mNom, DateTime mDataInici, Int32 mPreinscripcioOberta, Modalitat mModalitat, Int32 mGrupsCreats)
         {
             this.Id = mId;
             this.Nom = mNom;
             this.DataInici = DataInici;
             this.PreinscripcioOberta = mPreinscripcioOberta;
             this.Modalitat = mModalitat;
+            this.GrupsCreats = mGrupsCreats;
         }
 
-        public Torneig( String mNom, DateTime mDataInici, Int32 mPreinscripcioOberta, Modalitat mModalitat)
+        public Torneig( String mNom, DateTime mDataInici, Int32 mPreinscripcioOberta, Modalitat mModalitat, Int32 mGrupsCreats)
         {
             this.Nom = mNom;
             this.DataInici = DataInici;
             this.PreinscripcioOberta = mPreinscripcioOberta;
             this.Modalitat = mModalitat;
+            this.GrupsCreats = mGrupsCreats;
         }
 
         private int mId;
@@ -42,6 +45,13 @@ namespace Tornejos.Model
         {
             set { mId = value; }
             get { return mId; }
+        }
+
+        private int mGrupsCreats;
+        public int GrupsCreats
+        {
+            set { mGrupsCreats = value; }
+            get { return mGrupsCreats; }
         }
 
         private string mNom;
