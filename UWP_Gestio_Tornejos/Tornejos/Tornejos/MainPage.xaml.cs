@@ -30,6 +30,14 @@ namespace Tornejos
             this.InitializeComponent();
             inflarCmbModalitats();
             inflarLvTornejos();
+            inflarMotiuVictoria();
+        }
+
+        private void inflarMotiuVictoria()
+        {
+            cmbMotiu.Items.Add("Per caramboles");
+            cmbMotiu.Items.Add("Entrades assolides");
+            cmbMotiu.Items.Add("Abandonament");
         }
 
         private void inflarLvTornejos()
@@ -54,6 +62,8 @@ namespace Tornejos
                 lvGrups.ItemsSource = null;
                 lvGrupsDisponibles.ItemsSource = null;
                 lvInscrits.ItemsSource = null;
+                lvGrupsTorneig.ItemsSource = null;
+                lvEntradaResultats.ItemsSource = null;
             }
             else
             {
@@ -63,6 +73,7 @@ namespace Tornejos
                     lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                     lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                     lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
+                    lvGrupsTorneig.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                     return;
                 }
 
@@ -77,6 +88,7 @@ namespace Tornejos
                 lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                 lvGrupsDisponibles.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
                 lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
+                lvGrupsTorneig.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
             }
         }
 
@@ -89,6 +101,14 @@ namespace Tornejos
             txtLimitEntradesGrup.IsEnabled = b;
             txtNomGrup.IsEnabled = b;
             btnCrearGrup.IsEnabled = b;
+            lvEntradaResultats.IsEnabled = b;
+            lvGrupsTorneig.IsEnabled = b;
+            txtCarambolesA.IsEnabled = b;
+            txtCarambolesB.IsEnabled = b;
+            txtEntrades.IsEnabled = b;
+            cmbGuanyador.IsEnabled = b;
+            cmbMotiu.IsEnabled = b;
+            btnActualitzarPartida.IsEnabled = b;
 
         }
 
@@ -181,10 +201,8 @@ namespace Tornejos
             Button b = (Button)sender;
             int index = (int)b.Tag;
             Pivote.SelectedItem = Resultats;
-
-
-
-
+            lvGrupsTorneig.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(index);
+            lvTornejos.SelectedIndex = ((int) b.Tag - 1);
         }
 
         private void btnTancar_Click(object sender, RoutedEventArgs e)
@@ -246,10 +264,7 @@ namespace Tornejos
             }
         }
 
-        private void lvInscrits_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
 
         private void btnCrearGrup_Click(object sender, RoutedEventArgs e)
         {
@@ -422,6 +437,131 @@ namespace Tornejos
                     DisplayError("Error", "Els encreuaments d'aquest torneig ja estan creats");
                 }
             }
+        }
+
+        private void lvGrupsTorneig_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+            if (t != null)
+            {
+                Grup g = (Grup)lvGrupsTorneig.SelectedItem;
+
+                if(g != null)
+                {
+                    lvEntradaResultats.ItemsSource = TorneigBD.selectEnfrentamientos(t, g);
+                }
+            }   
+        }
+
+        private void btnActualitzarPartida_Click(object sender, RoutedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+            if (t != null)
+            {
+                Grup g = (Grup)lvGrupsTorneig.SelectedItem;
+                Partida p = (Partida)lvEntradaResultats.SelectedItem;
+                String guanyador = "";
+                try
+                {
+                    guanyador = cmbGuanyador.SelectedItem.ToString();
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "Selecciona un guanyador");
+                }
+                    
+                Char guanyadorChar = ' ';
+                Int32 carambolesA, carambolesB, entrades;
+                String motiuVictoria;
+                try
+                {
+                    motiuVictoria = cmbMotiu.SelectedItem.ToString();
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "No hi ha motiu de victoria");
+                }
+
+
+                if (guanyador.Equals(p.InscritA.NomCognoms))
+                {
+                    guanyadorChar = 'A';
+
+                }
+                else if(guanyador.Equals(p.InscritB.NomCognoms))
+                {
+                    guanyadorChar = 'B';
+                }
+
+
+                if (g == null)
+                {
+                    DisplayError("Error", "No hi ha cap grup seleccionat");
+                }
+
+                if (p == null)
+                {
+                    DisplayError("Error", "No hi ha cap encreuament seleccionat");
+                }
+
+                try
+                {
+                    carambolesA = Int32.Parse(txtCarambolesA.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "Caramboles de A incorrectes");
+                    return;
+                }
+
+                try
+                {
+                    motiuVictoria = cmbMotiu.SelectedItem.ToString();
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "Caramboles de A incorrectes");
+                    return;
+                }
+
+                try
+                {
+                    carambolesB = Int32.Parse(txtCarambolesB.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "Caramboles de B incorrectes");
+                    return;
+                }
+
+                try
+                {
+                    entrades = Int32.Parse(txtEntrades.Text);
+                }
+                catch (Exception ex)
+                {
+                    DisplayError("Error", "Entrades incorrectes");
+                    return;
+                }
+
+                DisplayError("Ok", "Partida guardada correctament");
+                TorneigBD.updatePartidaResultats(carambolesA, carambolesB, entrades, guanyadorChar, motiuVictoria, t.Id, g.Num, p.Id);
+
+            }else
+            {
+                DisplayError("Error", "Selecciona un torneig");
+            }
+            
+        }
+
+        private void lvEntradaResultats_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cmbGuanyador.Items.Clear();
+            Partida p = (Partida) lvEntradaResultats.SelectedItem;
+            String nomInscritA = p.InscritA.NomCognoms;
+            String nomInscritB = p.InscritB.NomCognoms;
+            cmbGuanyador.Items.Add(nomInscritA);
+            cmbGuanyador.Items.Add(nomInscritB);
         }
 
         public Grid generarTablaClassificacio(Grup g, Int32 idTorneig)

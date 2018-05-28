@@ -81,7 +81,7 @@ namespace Tornejos.Model
         {
             get
             {
-                String resultado = this.Num + "";
+                String resultado = (this.Num +1) + "";
 
                 resultado = resultado + ": " + Description;
 

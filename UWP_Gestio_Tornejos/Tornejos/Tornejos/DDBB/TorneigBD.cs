@@ -380,6 +380,7 @@ namespace Tornejos.DDBB
             return grups;
         }
 
+
         public static Torneig selectTorneigPerId(int idTorneig)
         {
             Torneig t = null;
@@ -970,6 +971,129 @@ namespace Tornejos.DDBB
         public static String getDataSQLFromDateTime(DateTime data)
         {
             return data.Year + "-" + data.Month + "-" + data.Day;
+        }
+
+        internal static ObservableCollection<Partida> selectEnfrentamientos(Torneig torneig, Grup grup)
+        {
+            ObservableCollection<Partida> partides = new ObservableCollection<Partida>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    
+                    consulta.CommandText = @"select partida.* from partida where torneig_id = @idTorneig and grup_num = @numGrup";
+                    UtilsDB.AddParameter(consulta, "idTorneig", torneig.Id, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", grup.Num, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Partida p;
+
+                        Int32 id = reader.GetInt32(reader.GetOrdinal("id"));
+                        Int32 cA = reader.GetInt32(reader.GetOrdinal("caramboles_a"));
+                        Int32 cB = reader.GetInt32(reader.GetOrdinal("caramboles_b"));
+                        Int32 numEntrades = reader.GetInt32(reader.GetOrdinal("num_entrades"));
+
+
+                        Inscrit A = TorneigBD.selectInscritDePartidaPassantId(torneig.Id, grup.Num, reader.GetInt32(reader.GetOrdinal("inscrit_a")));
+                        Inscrit B = TorneigBD.selectInscritDePartidaPassantId(torneig.Id, grup.Num, reader.GetInt32(reader.GetOrdinal("inscrit_b")));
+
+                        Partida partida = new Partida(id, cA, cB, numEntrades, torneig, grup, A, B, null, ' ', "pendent");
+                        partides.Add(partida);
+                    }
+
+                }
+            }
+            return partides;
+        }
+
+        private static Inscrit selectInscritDePartidaPassantId(Int32 idTorneig, Int32 idGrup, Int32 idInscrit)
+        {
+            DateTime data;
+            ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+                    consulta.CommandText = @"select * from inscrit where torneig_id = @idTorneig and grup_num = @numGrup and soci_id = @idInscrit";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", idGrup, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idInscrit", idInscrit, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inscrit i;
+
+                        Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
+                        Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
+                        Int32 numG = -1;
+                        try
+                        {
+                            numG = reader.GetInt32(reader.GetOrdinal("grup_num"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        data = reader.GetDateTime(reader.GetOrdinal("data"));
+
+                        Soci s = TorneigBD.selectSociPerId(idS);
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        if (numG != -1)
+                        {
+                            Grup g = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
+                            i = new Inscrit(s, t, g, data);
+                            return i;
+                        }
+                        else
+                        {
+                            i = new Inscrit(s, t, null, data);
+                            return i;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        internal static void updatePartidaResultats(int carambolesA, int carambolesB, int entrades, char guanyadorChar, string motiuVictoria, int idTorneig, int numGrup, int idPartida)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+                    consulta.CommandText = @"update partida set caramboles_a = @carambolesA, caramboles_b = @carambolesB, num_entrades = @numEntrades, motiu_victoria = @motiuVictoria, guanyador = @guanyador, estat_partida = 'jugada' where id = @idPartida and torneig_id = @idTorneig and grup_num = @numGrup";
+
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", numGrup, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idPartida", idPartida, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "carambolesA", carambolesA, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "carambolesB", carambolesB, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numEntrades", entrades, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "motiuVictoria", motiuVictoria, MySqlDbType.String);
+                    UtilsDB.AddParameter(consulta, "guanyador", guanyadorChar, MySqlDbType.String);
+
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
         }
 
         /*public static ObservableCollection<Modalitat> GetAllDept(string numeroDept = "" , string nomLocalitat = "")

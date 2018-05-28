@@ -104,6 +104,7 @@
     <Compile Include="Model\Grup.cs" />
     <Compile Include="Model\Inscrit.cs" />
     <Compile Include="Model\Modalitat.cs" />
+    <Compile Include="Model\Partida.cs" />
     <Compile Include="Model\Soci.cs" />
     <Compile Include="Model\Torneig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
