@@ -106,7 +106,7 @@
                         <Button x:ConnectionId='41' x:Name="btnGenerarEncreuaments" Content="Generar encreuaments" HorizontalAlignment="Left" Margin="453,562,0,0" VerticalAlignment="Top" Width="263"                                     />
                         <TextBlock x:ConnectionId='42' x:Name="txtInscritsGrup" Text="Inscrits al grup" HorizontalAlignment="Left" Margin="516,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
                         <ListView x:ConnectionId='43' Background="LightGray" x:Name="lvInscritsDeUnGrup" ItemTemplate="{StaticResource InscritsNomCognom}" HorizontalAlignment="Left" Height="149" Margin="453,377,0,0" VerticalAlignment="Top" Width="263"/>
-                        <Button x:ConnectionId='44' x:Name="btnEsborradInscritDeUnGrup" Content="Treure del grup" HorizontalAlignment="Left" Margin="289,434,0,0" VerticalAlignment="Top" Width="132"                                     />
+                        <Button x:ConnectionId='44' x:Name="btnEsborradInscritDeUnGrup" Content="Treure del grup" HorizontalAlignment="Left" Margin="289,434,0,0" VerticalAlignment="Top" Width="132"                                         />
 
                     </Grid>
                 </PivotItem>

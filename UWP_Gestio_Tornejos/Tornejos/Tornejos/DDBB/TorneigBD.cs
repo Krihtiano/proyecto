@@ -697,6 +697,34 @@ namespace Tornejos.DDBB
             }
         }
 
+        internal static void TreureGrupAUnInscrit(Inscrit inscrit, Int32 idTorneig, Int32 numGrup)
+        {
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+
+                MySqlTransaction trans = connexio.BeginTransaction();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+                    consulta.Transaction = trans;
+                    consulta.CommandText = @"update inscrit set grup_num = null where torneig_id = @idTorneig and soci_id = @idSoci and grup_num = @numGrup";
+
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", numGrup, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
+                    try
+                    {
+                        consulta.ExecuteNonQuery();
+                        trans.Commit();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+        }
+
         internal static void EsborrarInscritsDeUnTorneig(int idTorneig)
         {
             using (MySqlConnection connexio = MySQL.GetConnexio())

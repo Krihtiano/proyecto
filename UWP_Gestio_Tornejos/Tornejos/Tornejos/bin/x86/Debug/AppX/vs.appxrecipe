@@ -28,13 +28,13 @@
     <AppXManifest Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-28T20:21:22.043</Modified>
+      <Modified>2018-05-28T22:49:53.997</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Tornejos.exe">
       <PackagePath>entrypoint\Tornejos.exe</PackagePath>
-      <Modified>2018-05-28T20:21:17.881</Modified>
+      <Modified>2018-05-28T22:49:53.741</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Cristian\.nuget\packages\Microsoft.CSharp\4.0.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -501,11 +501,11 @@
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-28T20:21:21.159</Modified>
+      <Modified>2018-05-28T21:42:35.852</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\Tornejos.exe">
       <PackagePath>Tornejos.exe</PackagePath>
-      <Modified>2018-05-28T20:21:22.037</Modified>
+      <Modified>2018-05-28T22:49:53.990</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,7 @@ namespace Tornejos
         private void lvTornejos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lvClassificacioGrups.Items.Clear();
+            lvInscritsDeUnGrup.ItemsSource = null;
             Torneig t = (Torneig)lvTornejos.SelectedItem;
             if (t == null)
             {
@@ -418,6 +419,7 @@ namespace Tornejos
 
         private void btnGenerarEncreuaments_Click(object sender, RoutedEventArgs e)
         {
+            int countPartides = 0;
             Torneig t = (Torneig)lvTornejos.SelectedItem;
             if (t != null)
             {
@@ -436,19 +438,28 @@ namespace Tornejos
                                 {
                                     TorneigBD.updateTorneigGrupsCreats(t.Id);
                                     inflarLvTornejos();
-                                    DisplayError("Ok", "Encreuaments creats correctament");
-                                    return;
+
                                 }
                                 for(int k = (j+1); k < inscrits.Count; k++)
                                 {
                                     Inscrit A = inscrits[j];
                                     Inscrit B = inscrits[k];
                                     TorneigBD.insertPartida(t.Id, grups[i].Num, A, B);
+                                    countPartides++;
                                 }
                             }
                         }
-
-                    }else
+                        if(countPartides >= 1)
+                        {
+                            DisplayError("Ok", "Encreuaments creats correctament");
+                            return;
+                        }else
+                        {
+                            DisplayError("Error", "No s'ha generat cap encreuament perquè no hi habia inscrits a cap grup");
+                            return;
+                        }
+                    }
+                    else
                     {
                         DisplayError("Error", "Aquest torneig encara no está tancat");
                     }
@@ -778,6 +789,47 @@ namespace Tornejos
                     return;
                 }
             } */
+        }
+
+        private void btnEsborradInscritDeUnGrup_Click(object sender, RoutedEventArgs e)
+        {
+            Torneig t = (Torneig)lvTornejos.SelectedItem;
+            if (t.PreinscripcioOberta == 1)
+            {
+                if (t != null)
+                {
+                    Grup g = (Grup)lvGrupsDisponibles.SelectedItem;
+                    if(g != null)
+                    {
+                        Inscrit inscrit = (Inscrit)lvInscritsDeUnGrup.SelectedItem;
+                        if (inscrit != null)
+                        {
+                            TorneigBD.TreureGrupAUnInscrit(inscrit, t.Id, g.Num);
+
+                            lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
+                            lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
+                            DisplayError("Ok", "Soci esborrat del grup");
+                            return;
+                        }
+                        else
+                        {
+                            DisplayError("Error", "Selecciona un inscrit");
+                            return;
+                        }
+                    }else
+                    {
+                        DisplayError("Error", "Selecciona un grup");
+                        return;
+                    }
+                }else
+                {
+                    DisplayError("Error", "Selecciona un torneig");
+                    return;
+                }
+            }else
+            {
+                DisplayError("Error", "No es pot esborrar cap inscrit perquè el grup està tancat");
+            }
         }
 
         private void ponerCamposEnabledDisabled(bool b)
