@@ -113,8 +113,16 @@ namespace Tornejos.Model
         {
             get
             {
-                String resultado = mInscritA.NomCognoms + " vs " + mInscritB.NomCognoms;
-                return resultado;
+                try
+                {
+                    String resultado = mInscritA.NomCognoms + " vs " + mInscritB.NomCognoms;
+                    return resultado;
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return null;
             }
             set { }
         }

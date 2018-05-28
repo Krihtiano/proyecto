@@ -28,13 +28,13 @@
     <AppXManifest Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-28T11:43:55.639</Modified>
+      <Modified>2018-05-28T19:13:34.370</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Tornejos.exe">
       <PackagePath>entrypoint\Tornejos.exe</PackagePath>
-      <Modified>2018-05-28T11:43:43.870</Modified>
+      <Modified>2018-05-28T19:13:33.096</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Usuari\.nuget\packages\Microsoft.CSharp\4.0.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -492,7 +492,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Tornejos.xr.xml">
       <PackagePath>Tornejos.xr.xml</PackagePath>
-      <Modified>2018-05-27T22:19:09.118</Modified>
+      <Modified>2018-05-28T18:06:12.228</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -500,11 +500,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2018-05-27T23:22:21.518</Modified>
+      <Modified>2018-05-28T18:06:14.141</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Cristian Lopez\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\bin\x86\Debug\Core\Tornejos.exe">
       <PackagePath>Tornejos.exe</PackagePath>
-      <Modified>2018-05-28T11:43:55.608</Modified>
+      <Modified>2018-05-28T19:13:34.134</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

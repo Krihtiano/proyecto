@@ -983,7 +983,7 @@ namespace Tornejos.DDBB
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
                     
-                    consulta.CommandText = @"select partida.* from partida where torneig_id = @idTorneig and grup_num = @numGrup";
+                    consulta.CommandText = @"select partida.* from partida where torneig_id = @idTorneig and grup_num = @numGrup and estat_partida = 'pendent'";
                     UtilsDB.AddParameter(consulta, "idTorneig", torneig.Id, MySqlDbType.Int32);
                     UtilsDB.AddParameter(consulta, "numGrup", grup.Num, MySqlDbType.Int32);
 

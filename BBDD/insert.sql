@@ -44,7 +44,7 @@ INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (1, 3, 0, '2018
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 1, 0, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 2, 0, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (2, 3, 0, '2018-05-14');
-INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 1, 0, '2018-05-14');
+INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 1, 1, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 2, 0, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (3, 3, 0, '2018-05-14');
 INSERT INTO inscrit (soci_id, torneig_id, grup_num, data) VALUES (4, 3, null, '2018-05-14');
