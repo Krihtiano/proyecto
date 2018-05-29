@@ -86,6 +86,8 @@ public class Soci implements Serializable{
     public void setNif(String nif) {
         if(nif.length() == 0 || nif == null){
             throw new RuntimeException("El nif no pot ser vuit o null");
+        } if(nif.length() > 11){
+            throw new RuntimeException("El nif no pot ser superior a 11 caracters");
         }
         this.nif = nif;
     }
@@ -97,6 +99,9 @@ public class Soci implements Serializable{
     public void setNom(String nom) {
         if(nom.length() == 0 || nom == null){
             throw new RuntimeException("El nom no pot ser vuit o null");
+        } 
+        if(nom.length()> 30){
+            throw new RuntimeException("El nom no pot ser major de 30 caracters");
         }
         this.nom = nom;
     }
@@ -109,6 +114,9 @@ public class Soci implements Serializable{
         if(cognom1.length() == 0 || cognom1 == null){
             throw new RuntimeException("El cognom no pot ser vuit o null");
         }
+        if(cognom1.length() > 30){
+            throw new RuntimeException("El cognom no pot ser major de 30 caracters");
+        }
         this.cognom1 = cognom1;
     }
 
@@ -119,6 +127,9 @@ public class Soci implements Serializable{
     public void setCognom2(String cognom2) {
         if(cognom2.length() == 0 || cognom2 == null){
             throw new RuntimeException("El segón cognom no pot ser vuit o null");
+        }
+        if(cognom2.length() > 30){
+            throw new RuntimeException("El segon cognom no pot ser major de 30 caracters");
         }
         this.cognom2 = cognom2;
     }

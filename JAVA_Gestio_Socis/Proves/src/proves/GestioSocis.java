@@ -90,6 +90,11 @@ public class GestioSocis extends javax.swing.JFrame {
         initComponents();
 
         btnEditar.setEnabled(false);
+        
+        //Estos setEnabled estan puestos porque no se edita el coeficiente/carambolas/entradas.
+        txtCaramboles.setEnabled(false);
+        txtEntrades.setEnabled(false);
+        txtCoeficient.setEnabled(false);
 
         if (nomFitxerPropietats == null) {
             nomFitxerPropietats = "mysql.txt";
@@ -162,6 +167,7 @@ public class GestioSocis extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         jSP = new javax.swing.JScrollPane();
         btnSeleccionarFoto = new javax.swing.JButton();
+        btnEsborrarFoto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -247,10 +253,21 @@ public class GestioSocis extends javax.swing.JFrame {
             }
         });
 
+        btnEsborrarFoto.setText("Esborrar foto");
+        btnEsborrarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEsborrarFotoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(480, 480, 480)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -308,13 +325,10 @@ public class GestioSocis extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnEsborrarFoto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSeleccionarFoto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                         .addComponent(jSP, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(27, 27, 27))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,7 +387,9 @@ public class GestioSocis extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(txtEntrades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSeleccionarFoto))
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEsborrarFoto)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         pack();
@@ -387,11 +403,13 @@ public class GestioSocis extends javax.swing.JFrame {
         btnCrear.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnEditar.setEnabled(false);
+        jListSocis.setEnabled(false);
         posarCampsDisabledEnabled(true);
         creando = true;
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
         cargarFoto(null);
         btnEditar.setEnabled(false);
         try {
@@ -399,11 +417,12 @@ public class GestioSocis extends javax.swing.JFrame {
             int index = jListSocis.getSelectedIndex();
             int id = socis.get(index).getId();
             pmysql.removeSoci(id);
-            cargarListaSocis();
             vaciarCampos();
             JOptionPane.showMessageDialog(null, "Soci esborrat correctament.");
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Selecciona un soci.");
         }
+        cargarListaSocis();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jListSocisPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jListSocisPropertyChange
@@ -411,14 +430,15 @@ public class GestioSocis extends javax.swing.JFrame {
     }//GEN-LAST:event_jListSocisPropertyChange
 
     private void jListSocisValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListSocisValueChanged
-        btnEditar.setEnabled(true);
+
         if (!jListSocis.getValueIsAdjusting()) {
+            btnEditar.setEnabled(true);
             posarCampsDisabledEnabled(false);
             vaciarCampos();
             carregarValorsSoci();
             btnCrear.setEnabled(true);
             btnEliminar.setEnabled(true);
-            btnEditar.setEnabled(true);
+
         }
     }//GEN-LAST:event_jListSocisValueChanged
 
@@ -472,17 +492,19 @@ public class GestioSocis extends javax.swing.JFrame {
 
                 pmysql.addSoci(s, m, coeficient, caramboles, entrades);
                 restaurarBotones();
-                cargarListaSocis();
                 creando = false;
                 jfc.setSelectedFile(null);
+                jlab.setIcon(new ImageIcon(""));
                 btnEditar.setEnabled(false);
-                //JOptionPane.showMessageDialog(null, "Soci afegit correctament.");
+                JOptionPane.showMessageDialog(null, "Soci afegit correctament.");
+                cargarListaSocis();
             } catch (Exception e) {
                 restaurarBotones();
-                cargarListaSocis();
                 creando = false;
                 jfc.setSelectedFile(null);
+                jlab.setIcon(new ImageIcon(""));
                 btnEditar.setEnabled(false);
+                cargarListaSocis();
             }
         }
         if (editando == true) {
@@ -492,21 +514,30 @@ public class GestioSocis extends javax.swing.JFrame {
                 int idSoci = socis.get(index).getId();
                 Soci soci = pmysql.getSoci(idSoci);
                 int idModalitat = pmysql.getIdModalitat(jCmbModalitat.getSelectedItem().toString());
-                EstadisticaModalitat emod = pmysql.getEstadisticaModalitat(idSoci, idModalitat);
+                Modalitat mod = pmysql.getModalitat(jCmbModalitat.getSelectedItem().toString());
+                EstadisticaModalitat emod = new EstadisticaModalitat(soci,mod,0f, 0 ,0);
+                try{
+                    emod = pmysql.getEstadisticaModalitat(idSoci, idModalitat);
+                }catch(Exception ex){
+                    
+                }
 
                 soci.setNom(txtNom.getText());
                 soci.setNif(txtNif.getText());
                 soci.setCognom1(txtCognom.getText());
                 soci.setCognom2(txtCognom2.getText());
-                soci.setPasswordHash(getHashFromPassowrd(txtPassword.getText()));
-                byte[] fotoEnBytes = null;
+                if(txtPassword.getText() != null && txtPassword.getText().length() >= 1){
+                    soci.setPasswordHash(getHashFromPassowrd(txtPassword.getText()));
+                }
+                byte[] fotoEnBytes = soci.getFoto();
                 try {
                     fotoEnBytes = getByteArrayFromFile(jfc.getSelectedFile());
                 } catch (Exception e) {
 
-                }
-                soci.setFoto(fotoEnBytes);
+                }  
 
+                soci.setFoto(fotoEnBytes);
+                    
                 Float coeficient;
                 Integer caramboles, entrades;
                 try {
@@ -528,18 +559,23 @@ public class GestioSocis extends javax.swing.JFrame {
                 }
                 
                 pmysql.editarEM(emod);
+                jListSocis.setEnabled(true);
                 pmysql.editarSoci(soci);
                 restaurarBotones();
                 editando = false;
                 jfc.setSelectedFile(null);
+                jlab.setIcon(new ImageIcon(""));
                 btnEditar.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "Soci editat correctament.");
                 cargarListaSocis();
             } catch (Exception e) {
-                restaurarBotones();
-                cargarListaSocis();
-                editando = false;
-                jfc.setSelectedFile(null);
                 btnEditar.setEnabled(false);
+                restaurarBotones();
+                jfc.setSelectedFile(null);
+                jListSocis.setEnabled(true);
+                editando = false;
+                jlab.setIcon(new ImageIcon(""));
+                cargarListaSocis();
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -549,11 +585,13 @@ public class GestioSocis extends javax.swing.JFrame {
         vaciarCampos();
         btnCrear.setEnabled(true);
         btnEliminar.setEnabled(true);
-        btnEditar.setEnabled(true);
         editando = false;
         creando = false;
-        btnEditar.setEnabled(false);
+        jListSocis.setEnabled(true);
         jfc.setSelectedFile(null);
+        jlab.setIcon(new ImageIcon(""));
+        cargarListaSocis();
+        btnEditar.setEnabled(false);
     }//GEN-LAST:event_btnDescartarActionPerformed
 
     private void jCmbModalitatItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCmbModalitatItemStateChanged
@@ -581,6 +619,15 @@ public class GestioSocis extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionarFotoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        try{
+            ArrayList<Soci> socis = pmysql.getSocisValids();
+            int index = jListSocis.getSelectedIndex();
+            int idSoci = socis.get(index).getId();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Selecciona un Soci");
+            return;
+        }
+        jListSocis.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDescartar.setEnabled(true);
         btnCrear.setEnabled(false);
@@ -590,11 +637,24 @@ public class GestioSocis extends javax.swing.JFrame {
         editando = true;
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnEsborrarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEsborrarFotoActionPerformed
+       jfc.setSelectedFile(null);
+       jlab.setIcon(new ImageIcon(""));
+       if(editando == true){
+           ArrayList<Soci> socis = pmysql.getSocisValids();
+           int index = jListSocis.getSelectedIndex();
+           int idSoci = socis.get(index).getId();
+           Soci soci = pmysql.getSoci(idSoci);
+           soci.setFoto(null);
+       }
+    }//GEN-LAST:event_btnEsborrarFotoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnDescartar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEsborrarFoto;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnSeleccionarFoto;
     private javax.swing.JComboBox<String> jCmbModalitat;
@@ -628,6 +688,7 @@ public class GestioSocis extends javax.swing.JFrame {
             dlm.addElement(s);
         }
         this.jListSocis.setModel(dlm);
+        jListSocis.setEnabled(true);
     }
 
     private void cargarListaModalitats() {
@@ -677,7 +738,10 @@ public class GestioSocis extends javax.swing.JFrame {
         if (txtPassword.isEnabled() == !b) {
             txtPassword.setEnabled(b);
         }
-        if (txtCaramboles.isEnabled() == !b) {
+        //Isidre me dijo que al final no se editaban los coeficientes/carambolas/entradas de los socios, 
+        //si quiero editarlo deberia activar esto y quitar los 3 setEnabled(false) de arriba del programa.
+        
+        /*if (txtCaramboles.isEnabled() == !b) {
             txtCaramboles.setEnabled(b);
         }
         if (txtEntrades.isEnabled() == !b) {
@@ -685,7 +749,7 @@ public class GestioSocis extends javax.swing.JFrame {
         }
         if (txtCoeficient.isEnabled() == !b) {
             txtCoeficient.setEnabled(b);
-        }
+        }*/
         if (btnGuardar.isEnabled() == !b) {
             btnGuardar.setEnabled(b);
         }
@@ -694,6 +758,9 @@ public class GestioSocis extends javax.swing.JFrame {
         }
         if (btnSeleccionarFoto.isEnabled() == !b) {
             btnSeleccionarFoto.setEnabled(b);
+        }
+        if (btnEsborrarFoto.isEnabled() == !b) {
+            btnEsborrarFoto.setEnabled(b);
         }
     }
 
@@ -758,7 +825,7 @@ public class GestioSocis extends javax.swing.JFrame {
         btnDescartar.setEnabled(false);
         btnCrear.setEnabled(true);
         btnEliminar.setEnabled(true);
-        btnEditar.setEnabled(true);
+        btnEditar.setEnabled(false);
         posarCampsDisabledEnabled(false);
         vaciarCampos();
     }

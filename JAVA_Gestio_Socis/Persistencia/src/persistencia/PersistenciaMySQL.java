@@ -121,7 +121,6 @@ public class PersistenciaMySQL implements IBillar{
     @Override
     public void removeSoci(int id) {
         try {
-
             em.getTransaction().begin();
             ArrayList<Soci> socis = this.getSocis();
             Soci s = socis.get(id-1);
