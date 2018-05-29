@@ -1,0 +1,1 @@
+$F{ifnull(torneig.`data_finalitzacio`,0)} > $F{data_actual} ? $F{soci_nom} + " " + $F{soci_cognom1} + " " +  $F{soci_cognom2} : ""
