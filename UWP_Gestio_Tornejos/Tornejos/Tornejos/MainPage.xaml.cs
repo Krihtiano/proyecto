@@ -59,6 +59,8 @@ namespace Tornejos
         {
             lvClassificacioGrups.Items.Clear();
             lvInscritsDeUnGrup.ItemsSource = null;
+            lvEntradaResultats.ItemsSource = null;
+            lvGrupsTorneig.ItemsSource = null;
             Torneig t = (Torneig)lvTornejos.SelectedItem;
             if (t == null)
             {
@@ -70,7 +72,7 @@ namespace Tornejos
             }
             else
             {
-                if(t.DataFinalitzacio == null || t.DataFinalitzacio.Year == 0001) 
+                if (t.DataFinalitzacio == null || t.DataFinalitzacio.Year == 0001)
                 {
                     ponerCamposEnabledDisabled(true);
                     lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
@@ -78,7 +80,7 @@ namespace Tornejos
                     lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
                     lvGrupsTorneig.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
 
-                    if(bandereitor == true)
+                    if (bandereitor == true)
                     {
                         lvClassificacioGrups.Items.Clear();
                         ObservableCollection<Grup> grups = TorneigBD.selectGrupsDeUnTorneig(t.Id);
@@ -94,7 +96,8 @@ namespace Tornejos
 
                         }
                         return;
-                    } bandereitor = true;
+                    }
+                    bandereitor = true;
                 }
 
                 if (t.DataFinalitzacio <= DateTime.Now || (t.DataFinalitzacio.Day == DateTime.Now.Day && t.DataFinalitzacio.Month == DateTime.Now.Month && t.DataFinalitzacio.Year == DateTime.Now.Year))
@@ -105,7 +108,8 @@ namespace Tornejos
                     lvInscrits.ItemsSource = null;
                     ponerCamposEnabledDisabled(false);
                     return;
-                }else
+                }
+                else
                 {
                     ponerCamposEnabledDisabled(true);
                 }
@@ -119,7 +123,7 @@ namespace Tornejos
 
         private void btnFiltreEstat_Click(object sender, RoutedEventArgs e)
         {
-            if(estat == false)
+            if (estat == false)
             {
                 lvTornejos.ItemsSource = TorneigBD.selectTornejosFiltrados(data, estat);
                 btnFiltreEstat.Content = "Estat Tancat";
@@ -152,12 +156,13 @@ namespace Tornejos
 
         private void btnCrearTorneig_Click(object sender, RoutedEventArgs e)
         {
-            if(!(txbTitol.Text.Length >= 2 || txbTitol.Text.Length > 30)) {
+            if (!(txbTitol.Text.Length >= 2 || txbTitol.Text.Length > 30))
+            {
                 DisplayError("Error", "El nom del torneig es incorrecte(2-30 caracters)");
                 return;
             }
 
-            if(cmbModalitats.SelectedItem == null)
+            if (cmbModalitats.SelectedItem == null)
             {
                 DisplayError("Error", "Modalitat incorrecte");
                 return;
@@ -181,6 +186,12 @@ namespace Tornejos
         private void btnClassificacio_Click(object sender, RoutedEventArgs e)
         {
             bandereitor = false;
+            Button b = (Button)sender;
+            int index = (int)b.Tag;
+            Pivote.SelectedItem = Classificacio;
+            lvTornejos.SelectedIndex = ((int)b.Tag - 1);
+
+            /*
             lvClassificacioGrups.Items.Clear();
             Button b = (Button)sender;
             int index = (int)b.Tag;
@@ -197,7 +208,7 @@ namespace Tornejos
                 lvClassificacioGrups.Items.Add(grupIdNom);
                 lvClassificacioGrups.Items.Add(grid);
 
-            }
+            }*/
         }
 
         private void btnEntradaResultats_Click(object sender, RoutedEventArgs e)
@@ -206,7 +217,7 @@ namespace Tornejos
             int index = (int)b.Tag;
             Pivote.SelectedItem = Resultats;
             lvGrupsTorneig.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(index);
-            lvTornejos.SelectedIndex = ((int) b.Tag - 1);
+            lvTornejos.SelectedIndex = ((int)b.Tag - 1);
         }
 
         private void btnTancar_Click(object sender, RoutedEventArgs e)
@@ -223,23 +234,26 @@ namespace Tornejos
 
                 Torneig g = (Torneig)lvTornejos.SelectedItem;
                 int partidesDelTorneig = TorneigBD.selectCountPartidesTotalesDeTorneig(g.Id);
-                if(partidesDelTorneig == 0)
+                if (partidesDelTorneig == 0)
                 {
                     TorneigBD.tancarPreinscripcioTorneig(g.Id);
                     int seHaCerrado = TorneigBD.tancarTorneig(g.Id);
-                    if(seHaCerrado == 1)
+                    if (seHaCerrado == 1)
                     {
                         DisplayError("Torneig tancat", "S'ha tancat el torneig correctament");
                         lvTornejos.ItemsSource = TorneigBD.selectTornejos();
-                    }else
+                    }
+                    else
                     {
                         DisplayError("Error", "No s'ha pogut tancar el torneig");
                     }
-                }else
+                }
+                else
                 {
                     DisplayError("Error", "El torneig te partides encara per finaltizar");
                 }
-            }else
+            }
+            else
             {
                 DisplayError("Error", "Selecciona un torneig");
             }
@@ -268,7 +282,8 @@ namespace Tornejos
                     TorneigBD.EsborrarTorneig(t.Id);
                     inflarLvTornejos();
                 }
-            }else
+            }
+            else
             {
                 DisplayError("Error", "Selecciona un torneig");
             }
@@ -281,7 +296,7 @@ namespace Tornejos
             Torneig t = (Torneig)lvTornejos.SelectedItem;
             if (t != null)
             {
-                if(t.PreinscripcioOberta == 1)
+                if (t.PreinscripcioOberta == 1)
                 {
                     Int32 caramboles, entrades;
 
@@ -327,7 +342,9 @@ namespace Tornejos
                     DisplayError("Error", "No es poden crear grups perquè aquest torneig ja està tancat");
                     return;
                 }
-            }else {
+            }
+            else
+            {
                 DisplayError("Error", "Selecciona un torneig");
                 return;
             }
@@ -336,9 +353,9 @@ namespace Tornejos
         private void btnAfegirInscritAGrup_Click(object sender, RoutedEventArgs e)
         {
             Torneig t = (Torneig)lvTornejos.SelectedItem;
-            if(t != null)
+            if (t != null)
             {
-                if(t.PreinscripcioOberta == 1)
+                if (t.PreinscripcioOberta == 1)
                 {
                     if (lvGrupsDisponibles.SelectedItem == null || lvInscrits.SelectedItem == null)
                     {
@@ -353,7 +370,8 @@ namespace Tornejos
                         lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
                         lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
                     }
-                }else
+                }
+                else
                 {
                     DisplayError("Error", "No es pot afegir inscrits perquè el torneig ja està tancat");
                     return;
@@ -383,6 +401,26 @@ namespace Tornejos
             }
         }
 
+        private async void DisplayTancarGrupsDialog(Int32 idTorneig)
+        {
+            ContentDialog TancarGrupsDialog = new ContentDialog
+            {
+                Title = "Warning",
+                Content = "Aquest torneig te inscrits sense asignar a grups, vols continuar?",
+                PrimaryButtonText = "Ok",
+                SecondaryButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await TancarGrupsDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                TorneigBD.tancarPreinscripcioTorneig(idTorneig);
+                DisplayError("Ok", "Grups tancats correctament");
+                inflarLvTornejos();
+            }
+        }
+
         private async void DisplayError(String title, String content)
         {
             ContentDialog noWifiDialog = new ContentDialog
@@ -401,17 +439,27 @@ namespace Tornejos
 
             if (t != null)
             {
-                if(t.PreinscripcioOberta == 1)
+                if (t.PreinscripcioOberta == 1)
                 {
-                    TorneigBD.tancarPreinscripcioTorneig(t.Id);
-                    DisplayError("Ok", "Grups tancats correctament");
-                    inflarLvTornejos();
+                    Int32 contadorInscritosSinGrupo = 0;
+                    ObservableCollection<Inscrit> inscrits = TorneigBD.selectInscritsDeUnTorneig(t.Id);
+                    if (inscrits.Count() >= 1)
+                    {
+                        DisplayTancarGrupsDialog(t.Id);
+                    }
+                    else
+                    {
+                        TorneigBD.tancarPreinscripcioTorneig(t.Id);
+                        DisplayError("Ok", "Grups tancats correctament");
+                        inflarLvTornejos();
+                    }
                 }
                 else
                 {
                     DisplayError("Error", "El torneig ja està tancat");
                 }
-            }else
+            }
+            else
             {
                 DisplayError("Error", "Selecciona un torneig válid");
             }
@@ -423,9 +471,9 @@ namespace Tornejos
             Torneig t = (Torneig)lvTornejos.SelectedItem;
             if (t != null)
             {
-                if(t.GrupsCreats == 0)
+                if (t.GrupsCreats == 0)
                 {
-                    if(t.PreinscripcioOberta == 0)
+                    if (t.PreinscripcioOberta == 0)
                     {
 
                         ObservableCollection<Grup> grups = TorneigBD.selectGrupsDeUnTorneig(t.Id);
@@ -434,13 +482,13 @@ namespace Tornejos
                             ObservableCollection<Inscrit> inscrits = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, grups[i]);
                             for (int j = 0; j < inscrits.Count; j++)
                             {
-                                if(j == (inscrits.Count - 1))
+                                if (j == (inscrits.Count - 1))
                                 {
                                     TorneigBD.updateTorneigGrupsCreats(t.Id);
                                     inflarLvTornejos();
 
                                 }
-                                for(int k = (j+1); k < inscrits.Count; k++)
+                                for (int k = (j + 1); k < inscrits.Count; k++)
                                 {
                                     Inscrit A = inscrits[j];
                                     Inscrit B = inscrits[k];
@@ -449,11 +497,12 @@ namespace Tornejos
                                 }
                             }
                         }
-                        if(countPartides >= 1)
+                        if (countPartides >= 1)
                         {
                             DisplayError("Ok", "Encreuaments creats correctament");
                             return;
-                        }else
+                        }
+                        else
                         {
                             DisplayError("Error", "No s'ha generat cap encreuament perquè no hi habia inscrits a cap grup");
                             return;
@@ -463,8 +512,9 @@ namespace Tornejos
                     {
                         DisplayError("Error", "Aquest torneig encara no está tancat");
                     }
-                    
-                }else
+
+                }
+                else
                 {
                     DisplayError("Error", "Els encreuaments d'aquest torneig ja estan creats");
                 }
@@ -478,11 +528,11 @@ namespace Tornejos
             {
                 Grup g = (Grup)lvGrupsTorneig.SelectedItem;
 
-                if(g != null)
+                if (g != null)
                 {
                     lvEntradaResultats.ItemsSource = TorneigBD.selectEnfrentamientos(t, g);
                 }
-            }   
+            }
         }
 
         private void btnActualitzarPartida_Click(object sender, RoutedEventArgs e)
@@ -493,13 +543,13 @@ namespace Tornejos
                 Grup g = (Grup)lvGrupsTorneig.SelectedItem;
                 Partida p = (Partida)lvEntradaResultats.SelectedItem;
 
-                if(g == null)
+                if (g == null)
                 {
                     DisplayError("Error", "Selecciona un grup");
                     return;
                 }
 
-                if(p == null)
+                if (p == null)
                 {
                     DisplayError("Error", "Selecciona una partida");
                     return;
@@ -515,7 +565,7 @@ namespace Tornejos
                     DisplayError("Error", "Selecciona un guanyador");
                     return;
                 }
-                    
+
                 Char guanyadorChar = ' ';
                 Int32 carambolesA, carambolesB, entrades;
                 String motiuVictoria;
@@ -535,7 +585,7 @@ namespace Tornejos
                     guanyadorChar = 'A';
 
                 }
-                else if(guanyador.Equals(p.InscritB.NomCognoms))
+                else if (guanyador.Equals(p.InscritB.NomCognoms))
                 {
                     guanyadorChar = 'B';
                 }
@@ -580,8 +630,13 @@ namespace Tornejos
                     return;
                 }
 
-                
                 TorneigBD.updatePartidaResultats(carambolesA, carambolesB, entrades, guanyadorChar, motiuVictoria, t.Id, g.Num, p.Id);
+
+
+
+
+
+
                 DisplayError("Ok", "Partida guardada correctament");
                 lvEntradaResultats.ItemsSource = TorneigBD.selectEnfrentamientos(t, g);
                 lvGrups.ItemsSource = TorneigBD.selectGrupsDeUnTorneig(t.Id);
@@ -594,7 +649,7 @@ namespace Tornejos
                 DisplayError("Error", "Selecciona un torneig");
                 return;
             }
-            
+
         }
 
         private void lvEntradaResultats_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -622,7 +677,7 @@ namespace Tornejos
                 if (t != null)
                 {
                     Grup g = (Grup)lvGrupsDisponibles.SelectedItem;
-                    if(g != null)
+                    if (g != null)
                     {
                         lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
                     }
@@ -717,10 +772,10 @@ namespace Tornejos
                 //Posicio
                 TextBox tiPosicio = new TextBox();
                 tiPosicio.IsEnabled = false;
-                tiPosicio.Text = ("" +(i+1));
+                tiPosicio.Text = ("" + (i + 1));
                 grid.Children.Add(tiPosicio);
                 Grid.SetColumn(tiPosicio, 0);
-                Grid.SetRow(tiPosicio, i+1);
+                Grid.SetRow(tiPosicio, i + 1);
 
                 //Nom Jugador
                 TextBox tiNomJugador = new TextBox();
@@ -741,7 +796,7 @@ namespace Tornejos
 
                 TextBox tiPartidesGuanyades = new TextBox();
                 tiPartidesGuanyades.IsEnabled = false;
-                tiPartidesGuanyades.Text = "" + TorneigBD.selectPartidesGuanyadesDeUnInscrit(idTorneig, g.Num, inscrits[i]); 
+                tiPartidesGuanyades.Text = "" + TorneigBD.selectPartidesGuanyadesDeUnInscrit(idTorneig, g.Num, inscrits[i]);
                 grid.Children.Add(tiPartidesGuanyades);
                 Grid.SetColumn(tiPartidesGuanyades, 3);
                 Grid.SetRow(tiPartidesGuanyades, i + 1);
@@ -767,7 +822,7 @@ namespace Tornejos
 
         private void Pivote_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*lvClassificacioGrups.Items.Clear();
+            lvClassificacioGrups.Items.Clear();
             if (Pivote.SelectedIndex == 2)
             {
                 Torneig t = (Torneig)lvTornejos.SelectedItem;
@@ -788,7 +843,7 @@ namespace Tornejos
                     }
                     return;
                 }
-            } */
+            }
         }
 
         private void btnEsborradInscritDeUnGrup_Click(object sender, RoutedEventArgs e)
@@ -799,7 +854,7 @@ namespace Tornejos
                 if (t != null)
                 {
                     Grup g = (Grup)lvGrupsDisponibles.SelectedItem;
-                    if(g != null)
+                    if (g != null)
                     {
                         Inscrit inscrit = (Inscrit)lvInscritsDeUnGrup.SelectedItem;
                         if (inscrit != null)
@@ -816,17 +871,20 @@ namespace Tornejos
                             DisplayError("Error", "Selecciona un inscrit");
                             return;
                         }
-                    }else
+                    }
+                    else
                     {
                         DisplayError("Error", "Selecciona un grup");
                         return;
                     }
-                }else
+                }
+                else
                 {
                     DisplayError("Error", "Selecciona un torneig");
                     return;
                 }
-            }else
+            }
+            else
             {
                 DisplayError("Error", "No es pot esborrar cap inscrit perquè el grup està tancat");
             }

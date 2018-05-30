@@ -25,6 +25,5 @@ namespace Tornejos.Model
             string conString = "server = 92.222.27.83; uid = m2-clopez; pwd = 47751177A;charset=utf8; SslMode=None ; database = m2_clopez";
             return new MySqlConnection(conString);
         }
-         
     }
 }

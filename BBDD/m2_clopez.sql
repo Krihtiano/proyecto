@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS inscrit (
   data timestamp NOT NULL,
   PRIMARY KEY (soci_id,torneig_id),
   CONSTRAINT inscrit_soci_id_fk FOREIGN KEY (soci_id) REFERENCES soci (id),
-  CONSTRAINT inscrit_torneig_id_fk FOREIGN KEY (torneig_id) REFERENCES grup (torneig_id),
+  CONSTRAINT inscrit_torneig_id_fk FOREIGN KEY (torneig_id) REFERENCES torneig (id),
   CONSTRAINT inscrit_grup_num_fk FOREIGN KEY (torneig_id,grup_num) REFERENCES grup (torneig_id, num)
 );
 

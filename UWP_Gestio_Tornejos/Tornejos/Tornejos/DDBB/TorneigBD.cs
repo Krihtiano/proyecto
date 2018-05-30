@@ -47,7 +47,7 @@ namespace Tornejos.DDBB
                 connexio.Open();
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
-                    
+
 
                     consulta.CommandText = @"select * from modalitat m where m.Id = @mId";
                     UtilsDB.AddParameter(consulta, "mId", mId, MySqlDbType.Int32);
@@ -116,7 +116,7 @@ namespace Tornejos.DDBB
                         {
 
                         }
-                         
+
                         Int32 preinscripcioOberta = reader.GetInt32(reader.GetOrdinal("preinscripcio_oberta"));
                         Modalitat mod = TorneigBD.selectModalitatPerId(reader.GetInt32(reader.GetOrdinal("modalitat_id")));
                         Int32 grupsCreats = reader.GetInt32(reader.GetOrdinal("grups_creats"));
@@ -164,12 +164,14 @@ namespace Tornejos.DDBB
 
                         Soci s = TorneigBD.selectSociPerId(idS);
                         Torneig t = TorneigBD.selectTorneigPerId(idT);
-                        if(numG != -1)
+                        if (numG != -1)
                         {
                             Grup g = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
                             i = new Inscrit(s, t, g, data);
                             inscrits.Add(i);
-                        }else {
+                        }
+                        else
+                        {
                             i = new Inscrit(s, t, null, data);
                             inscrits.Add(i);
                         }
@@ -192,8 +194,19 @@ namespace Tornejos.DDBB
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
 
-                    //Falta la ordenació de millor a pitjor puntuació (preguntar)
-                    consulta.CommandText = @"select inscrit.* from inscrit where inscrit.torneig_id = @idTorneig and inscrit.grup_num = @numGrup";
+                    
+                    consulta.CommandText = @"select i.*, 
+(select count(p.id) from partida p where (i.soci_id = p.inscrit_a and p.guanyador = 'A') or(i.soci_id = p.inscrit_b and p.guanyador = 'B'))  as 'guanyades'
+from inscrit i
+
+inner
+join partida on partida.inscrit_a = i.soci_id or partida.inscrit_b = i.soci_id
+
+where i.torneig_id = 3 and i.grup_num = 0
+group by i.soci_id
+order by guanyades desc";
+
+
                     UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
                     UtilsDB.AddParameter(consulta, "numGrup", g.Num, MySqlDbType.Int32);
 
@@ -202,6 +215,7 @@ namespace Tornejos.DDBB
                     {
                         Inscrit i;
 
+                        Int32 guanyades = reader.GetInt32(reader.GetOrdinal("guanyades"));
                         Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
                         Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
                         Int32 numG = -1;
@@ -283,7 +297,7 @@ namespace Tornejos.DDBB
                         try
                         {
                             finalitzatONo = reader.GetDateTime(reader.GetOrdinal("data_finalitzacio"));
-                            if(finalitzatONo <= DateTime.Now || ( finalitzatONo.Day == DateTime.Now.Day && finalitzatONo.Month == DateTime.Now.Month && finalitzatONo.Year == DateTime.Now.Year))
+                            if (finalitzatONo <= DateTime.Now || (finalitzatONo.Day == DateTime.Now.Day && finalitzatONo.Month == DateTime.Now.Month && finalitzatONo.Year == DateTime.Now.Year))
                             {
                                 return false;
                             }
@@ -347,7 +361,7 @@ namespace Tornejos.DDBB
                 }
             }
         }
- 
+
 
         public static ObservableCollection<Grup> selectInscritsDeUnTorneigIGrup(Int32 idTorneig)
         {
@@ -424,19 +438,19 @@ namespace Tornejos.DDBB
         internal static Int32 selectPartidesJugadesDeUnInscrit(int idTorneig, int num, Inscrit inscrit)
         {
             Int32 contador = 0;
-                using (MySqlConnection connexio = MySQL.GetConnexio())
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
                 {
-                    connexio.Open();
-                    using (MySqlCommand consulta = connexio.CreateCommand())
-                    {
-                        consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig and grup_num = @numGrup and (inscrit_a = @idSoci or inscrit_b = @idSoci) and estat_partida = 'jugada'";
-                        UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
-                        UtilsDB.AddParameter(consulta, "numGrup", num, MySqlDbType.Int32);
-                        UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
+                    consulta.CommandText = @"select count(*) from partida where torneig_id = @idTorneig and grup_num = @numGrup and (inscrit_a = @idSoci or inscrit_b = @idSoci) and estat_partida = 'jugada'";
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", num, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "idSoci", inscrit.Soci.Id, MySqlDbType.Int32);
 
                     return ((Int32)(long)consulta.ExecuteScalar());
-                    }
                 }
+            }
         }
 
         internal static Int32 selectPartidesGuanyadesDeUnInscrit(int idTorneig, int num, Inscrit inscrit)
@@ -561,10 +575,11 @@ namespace Tornejos.DDBB
         internal static void insertTorneig(Torneig t, String data)
         {
             String b;
-            if(t.PreinscripcioOberta == 0)
+            if (t.PreinscripcioOberta == 0)
             {
                 b = "true";
-            }else
+            }
+            else
             {
                 b = "false";
             }
@@ -879,7 +894,7 @@ namespace Tornejos.DDBB
 
                     while (reader.Read())
                     {
-                        
+
                         Int32 num = reader.GetInt32(reader.GetOrdinal("num"));
                         string description = reader.GetString(reader.GetOrdinal("description"));
                         Int32 carambolesVictoria = reader.GetInt32(reader.GetOrdinal("caramboles_victoria"));
@@ -1010,7 +1025,7 @@ namespace Tornejos.DDBB
                 connexio.Open();
                 using (MySqlCommand consulta = connexio.CreateCommand())
                 {
-                    
+
                     consulta.CommandText = @"select partida.* from partida where torneig_id = @idTorneig and grup_num = @numGrup and estat_partida = 'pendent'";
                     UtilsDB.AddParameter(consulta, "idTorneig", torneig.Id, MySqlDbType.Int32);
                     UtilsDB.AddParameter(consulta, "numGrup", grup.Num, MySqlDbType.Int32);
