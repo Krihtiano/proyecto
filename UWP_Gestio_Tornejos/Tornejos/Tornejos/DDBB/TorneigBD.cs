@@ -249,6 +249,62 @@ order by guanyades desc";
             return inscrits;
         }
 
+        public static ObservableCollection<Inscrit> selectInscritsDeUnTorneigIGrupSimple(Int32 idTorneig, Grup g)
+        {
+            DateTime data;
+            ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+
+                    consulta.CommandText = @"select * from inscrit where torneig_id = @idTorneig and grup_num = @numGrup";
+
+
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", g.Num, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inscrit i;
+
+                        Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
+                        Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
+                        Int32 numG = -1;
+                        try
+                        {
+                            numG = reader.GetInt32(reader.GetOrdinal("grup_num"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        data = reader.GetDateTime(reader.GetOrdinal("data"));
+
+                        Soci s = TorneigBD.selectSociPerId(idS);
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        if (numG != -1)
+                        {
+                            Grup gr = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
+                            i = new Inscrit(s, t, gr, data);
+                            inscrits.Add(i);
+                        }
+                        else
+                        {
+                            i = new Inscrit(s, t, null, data);
+                            inscrits.Add(i);
+                        }
+                    }
+
+                }
+            }
+            return inscrits;
+        }
+
         internal static Int32 selectTotalPartidesPerTorneig(int id)
         {
             using (MySqlConnection connexio = MySQL.GetConnexio())

@@ -137,8 +137,7 @@
                 </PivotItem>
                 <PivotItem Header="Reports">
                     <Grid>
-
-
+                        <WebView x:Name="webviewReports" Loaded="webviewReports_Loaded"/>
                     </Grid>
                 </PivotItem>
             </Pivot>

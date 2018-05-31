@@ -368,7 +368,7 @@ namespace Tornejos
                         Inscrit i = (Inscrit)lvInscrits.SelectedItem;
                         TorneigBD.updateInscritEnUnGrup(i, g);
                         lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
-                        lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
+                        lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrupSimple(t.Id, g);
                     }
                 }
                 else
@@ -679,7 +679,7 @@ namespace Tornejos
                     Grup g = (Grup)lvGrupsDisponibles.SelectedItem;
                     if (g != null)
                     {
-                        lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
+                        lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrupSimple(t.Id, g);
                     }
                 }
             }
@@ -862,7 +862,7 @@ namespace Tornejos
                             TorneigBD.TreureGrupAUnInscrit(inscrit, t.Id, g.Num);
 
                             lvInscrits.ItemsSource = TorneigBD.selectInscritsDeUnTorneig(t.Id);
-                            lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrup(t.Id, g);
+                            lvInscritsDeUnGrup.ItemsSource = TorneigBD.selectInscritsDeUnTorneigIGrupSimple(t.Id, g);
                             DisplayError("Ok", "Soci esborrat del grup");
                             return;
                         }
@@ -888,6 +888,11 @@ namespace Tornejos
             {
                 DisplayError("Error", "No es pot esborrar cap inscrit perquè el grup està tancat");
             }
+        }
+
+        private void webviewReports_Loaded(object sender, RoutedEventArgs e)
+        {
+            /*webviewReports.Source = new Uri("")*/
         }
 
         private void ponerCamposEnabledDisabled(bool b)

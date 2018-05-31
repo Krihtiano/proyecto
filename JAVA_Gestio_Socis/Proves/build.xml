@@ -70,11 +70,12 @@
     nbproject/build-impl.xml file. 
 
     -->
+
     <target name="package-for-store" depends="jar">
-        <property name="store.jar.name" value="PartnerManager"></property>
+        
+        <property name="store.jar.name" value="Proves"></property>
         <property name="store.dir" value="store"></property>
         <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"></property>
-        <echo message="Empaquetando"></echo>
         <delete dir="${store.dir}"></delete>
         <mkdir dir="${store.dir}"></mkdir>
         <jar destfile="${store.dir}/temp_final.jar" filesetmanifest="skip">
@@ -88,8 +89,7 @@
             <zipfileset src="${store.dir}/temp_final.jar" excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
         </zip>
         <delete file="${store.dir}/temp_final.jar"/>
+        
     </target>
-    
-
     
 </project>

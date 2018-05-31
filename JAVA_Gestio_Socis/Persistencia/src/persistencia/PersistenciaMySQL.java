@@ -122,10 +122,15 @@ public class PersistenciaMySQL implements IBillar{
     public void removeSoci(int id) {
         try {
             em.getTransaction().begin();
-            ArrayList<Soci> socis = this.getSocis();
-            Soci s = socis.get(id-1);
-            s.setActiu(0);
-            em.merge(s);
+            Soci sociFinal = null;
+            ArrayList<Soci> socis = this.getSocisValids();
+            for(Soci ss : socis){
+               if (ss.getId() == id){
+                   sociFinal = ss;
+               } 
+            }
+            sociFinal.setActiu(0);
+            em.merge(sociFinal);
             em.getTransaction().commit();
         }
         catch (Exception ex) {

@@ -3,6 +3,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +13,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
+@Access(AccessType.FIELD)
 @Table(name="soci")
 public class Soci implements Serializable{
     
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @TableGenerator(name = "gen_soci",
+            initialValue = 100,
+            table = "COMPTADORS",
+            pkColumnName = "CLAU",
+            valueColumnName = "COMPTADOR",
+            pkColumnValue = "SOCI",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "gen_soci")
     private int id;
     
     @Basic(optional=false)

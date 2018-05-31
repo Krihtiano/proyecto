@@ -2,7 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TorneigIGrups" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e282f3c2-af66-4170-9323-1663be128b7c">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="75"/>
+	<property name="ireport.y" value="74"/>
+	<property name="ireport.jasperserver.reportUnit" value="/m2-clopez/Reports/TorneigIGrups"/>
+	<property name="ireport.jasperserver.url" value="http://92.222.27.83:8080/jasperserver/services/repository"/>
 	<parameter name="torneigId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -121,9 +123,9 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{modalitat_description}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="9624f447-09f8-400d-8d95-55790ec9031e" x="349" y="32" width="206" height="20"/>
+					<reportElement uuid="9624f447-09f8-400d-8d95-55790ec9031e" x="381" y="32" width="174" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None"/>
-					<textFieldExpression><![CDATA[$F{soci_nom}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{ifnull(torneig.`data_finalitzacio`,0)} > $F{data_actual} ? $F{soci_nom} + " " + $F{soci_cognom1} + " " +  $F{soci_cognom2} : ""]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -174,7 +176,7 @@ ORDER BY
 					<text><![CDATA[Partides guanyades]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="8e2f4b6c-e2dd-4cc5-bae4-be961deca050" x="131" y="85" width="47" height="20"/>
+					<reportElement uuid="8e2f4b6c-e2dd-4cc5-bae4-be961deca050" x="115" y="85" width="58" height="20"/>
 					<textElement>
 						<font size="12" isBold="true"/>
 					</textElement>
@@ -201,7 +203,7 @@ ORDER BY
 			</staticText>
 			<image>
 				<reportElement uuid="2f5287c7-4314-401b-8b0d-b4d798a6e486" x="0" y="0" width="247" height="147"/>
-				<imageExpression><![CDATA["F:\\Proyecto\\UWP_Reports\\logo_billar.png"]]></imageExpression>
+				<imageExpression><![CDATA["logo_billar.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -218,7 +220,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{qtat_victories}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="88a1ba76-9dec-476f-bef2-fd0dd1bf3e24" x="131" y="9" width="42" height="20"/>
+				<reportElement uuid="88a1ba76-9dec-476f-bef2-fd0dd1bf3e24" x="115" y="8" width="42" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
