@@ -78,67 +78,66 @@
             <Pivot x:ConnectionId='3' Name="Pivote" Grid.Column="1"                                           >
                 <PivotItem Header="Tornejos">
                     <Grid>
-                        <TextBox x:ConnectionId='45' x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,307,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="315" Height="4"/>
-                        <TextBlock x:ConnectionId='46' x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="58" FontSize="20" Height="32"></TextBlock>
-                        <TextBlock x:ConnectionId='47' x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="11,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
-                        <ComboBox x:ConnectionId='48' x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="104,113,0,0" VerticalAlignment="Top" Width="315"/>
-                        <TextBlock x:ConnectionId='49' x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="10,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
-                        <DatePicker x:ConnectionId='50' x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="104,39,0,0" VerticalAlignment="Top" Width="315"/>
-                        <Button x:ConnectionId='51' x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top"                              />
+                        <TextBox x:ConnectionId='46' x:Name="txbTitol" HorizontalAlignment="Right" Margin="0,76,307,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="315" Height="4"/>
+                        <TextBlock x:ConnectionId='47' x:Name="textBlock" Text="Titol" HorizontalAlignment="Left" Margin="10,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="58" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:ConnectionId='48' x:Name="textBlock_Copy" Text="Modalitat" HorizontalAlignment="Left" Margin="11,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="88" FontSize="20" Height="32"/>
+                        <ComboBox x:ConnectionId='49' x:Name="cmbModalitats" HorizontalAlignment="Left" Margin="104,113,0,0" VerticalAlignment="Top" Width="315"/>
+                        <TextBlock x:ConnectionId='50' x:Name="textBlock_Copy1" Text="Data" HorizontalAlignment="Left" Margin="10,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="62" FontSize="20" Height="32"/>
+                        <DatePicker x:ConnectionId='51' x:Name="dtpDataTorneig" HorizontalAlignment="Left" Margin="104,39,0,0" VerticalAlignment="Top" Width="315"/>
+                        <Button x:ConnectionId='52' x:Name="btnCrearTorneig" Content="Crear Torneig" HorizontalAlignment="Left" Margin="6,175,0,0" VerticalAlignment="Top"                              />
 
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Grups">
                     <Grid>
-                        <TextBlock x:ConnectionId='28' x:Name="textBlockGrupName" Text="Nom del grup" HorizontalAlignment="Left" Margin="9,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="136" FontSize="20" Height="32"></TextBlock>
-                        <TextBlock x:ConnectionId='29' x:Name="textBlockCaramboles" Text="Objectiu caramboles" HorizontalAlignment="Left" Margin="9,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
-                        <TextBlock x:ConnectionId='30' x:Name="textBlockEntrades" Text="Limit entrades" HorizontalAlignment="Left" Margin="9,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
-                        <TextBox x:ConnectionId='31' x:Name="txtNomGrup" HorizontalAlignment="Left" Margin="200,37,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311"/>
-                        <TextBox x:ConnectionId='32' x:Name="txtCarambolesGrup" HorizontalAlignment="Left" Margin="200,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311"/>
-                        <TextBox x:ConnectionId='33' x:Name="txtLimitEntradesGrup" HorizontalAlignment="Left" Margin="200,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311"/>
-                        <Button x:ConnectionId='34' x:Name="btnCrearGrup" Content="Crear grup" HorizontalAlignment="Left" Margin="516,74,0,0" VerticalAlignment="Top" Width="200"                           />
-                        <TextBlock x:ConnectionId='35' x:Name="textBlockListaInscritos" Text="Llista inscrits" HorizontalAlignment="Center" Margin="70,174,493,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.493,0.469" Width="163" FontSize="20" Height="32"/>
-                        <ListView x:ConnectionId='36' Background="LightGray" x:Name="lvInscrits" ItemTemplate="{StaticResource InscritsNomCognom}" HorizontalAlignment="Left" Height="315" Margin="9,211,0,0" VerticalAlignment="Top" Width="252"/>
-                        <TextBlock x:ConnectionId='37' x:Name="textBlockGrupName_Copy" Text="Grups disponibles" HorizontalAlignment="Left" Margin="503,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
-                        <ListView x:ConnectionId='38' Background="LightGray" x:Name="lvGrupsDisponibles" HorizontalAlignment="Left" ItemTemplate="{StaticResource GrupsSimpleTemplate}" Height="97" Margin="453,211,0,0" VerticalAlignment="Top" Width="263"                                                       />
-                        <Button x:ConnectionId='39' x:Name="btnAfegirInscritAGrup" Content="Afegir" HorizontalAlignment="Left" Margin="289,243,0,0" VerticalAlignment="Top" Width="132"                                    />
-                        <Button x:ConnectionId='40' x:Name="btnTancarGrups" Content="TancarGrups" HorizontalAlignment="Left" Margin="9,562,0,0" VerticalAlignment="Top" Width="252"                             />
-                        <Button x:ConnectionId='41' x:Name="btnGenerarEncreuaments" Content="Generar encreuaments" HorizontalAlignment="Left" Margin="453,562,0,0" VerticalAlignment="Top" Width="263"                                     />
-                        <TextBlock x:ConnectionId='42' x:Name="txtInscritsGrup" Text="Inscrits al grup" HorizontalAlignment="Left" Margin="516,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
-                        <ListView x:ConnectionId='43' Background="LightGray" x:Name="lvInscritsDeUnGrup" ItemTemplate="{StaticResource InscritsNomCognom}" HorizontalAlignment="Left" Height="149" Margin="453,377,0,0" VerticalAlignment="Top" Width="263"/>
-                        <Button x:ConnectionId='44' x:Name="btnEsborradInscritDeUnGrup" Content="Treure del grup" HorizontalAlignment="Left" Margin="289,434,0,0" VerticalAlignment="Top" Width="132"                                         />
+                        <TextBlock x:ConnectionId='29' x:Name="textBlockGrupName" Text="Nom del grup" HorizontalAlignment="Left" Margin="9,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="136" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:ConnectionId='30' x:Name="textBlockCaramboles" Text="Objectiu caramboles" HorizontalAlignment="Left" Margin="9,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
+                        <TextBlock x:ConnectionId='31' x:Name="textBlockEntrades" Text="Limit entrades" HorizontalAlignment="Left" Margin="9,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="186" FontSize="20" Height="32"></TextBlock>
+                        <TextBox x:ConnectionId='32' x:Name="txtNomGrup" HorizontalAlignment="Left" Margin="200,37,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311"/>
+                        <TextBox x:ConnectionId='33' x:Name="txtCarambolesGrup" HorizontalAlignment="Left" Margin="200,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311"/>
+                        <TextBox x:ConnectionId='34' x:Name="txtLimitEntradesGrup" HorizontalAlignment="Left" Margin="200,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311"/>
+                        <Button x:ConnectionId='35' x:Name="btnCrearGrup" Content="Crear grup" HorizontalAlignment="Left" Margin="516,74,0,0" VerticalAlignment="Top" Width="200"                           />
+                        <TextBlock x:ConnectionId='36' x:Name="textBlockListaInscritos" Text="Llista inscrits" HorizontalAlignment="Center" Margin="70,174,493,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.493,0.469" Width="163" FontSize="20" Height="32"/>
+                        <ListView x:ConnectionId='37' Background="LightGray" x:Name="lvInscrits" ItemTemplate="{StaticResource InscritsNomCognom}" HorizontalAlignment="Left" Height="315" Margin="9,211,0,0" VerticalAlignment="Top" Width="252"/>
+                        <TextBlock x:ConnectionId='38' x:Name="textBlockGrupName_Copy" Text="Grups disponibles" HorizontalAlignment="Left" Margin="503,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
+                        <ListView x:ConnectionId='39' Background="LightGray" x:Name="lvGrupsDisponibles" HorizontalAlignment="Left" ItemTemplate="{StaticResource GrupsSimpleTemplate}" Height="97" Margin="453,211,0,0" VerticalAlignment="Top" Width="263"                                                       />
+                        <Button x:ConnectionId='40' x:Name="btnAfegirInscritAGrup" Content="Afegir" HorizontalAlignment="Left" Margin="289,243,0,0" VerticalAlignment="Top" Width="132"                                    />
+                        <Button x:ConnectionId='41' x:Name="btnTancarGrups" Content="TancarGrups" HorizontalAlignment="Left" Margin="9,562,0,0" VerticalAlignment="Top" Width="252"                             />
+                        <Button x:ConnectionId='42' x:Name="btnGenerarEncreuaments" Content="Generar encreuaments" HorizontalAlignment="Left" Margin="453,562,0,0" VerticalAlignment="Top" Width="263"                                     />
+                        <TextBlock x:ConnectionId='43' x:Name="txtInscritsGrup" Text="Inscrits al grup" HorizontalAlignment="Left" Margin="516,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.185,-0.4" Width="163" FontSize="20" Height="32"/>
+                        <ListView x:ConnectionId='44' Background="LightGray" x:Name="lvInscritsDeUnGrup" ItemTemplate="{StaticResource InscritsNomCognom}" HorizontalAlignment="Left" Height="149" Margin="453,377,0,0" VerticalAlignment="Top" Width="263"/>
+                        <Button x:ConnectionId='45' x:Name="btnEsborradInscritDeUnGrup" Content="Treure del grup" HorizontalAlignment="Left" Margin="289,434,0,0" VerticalAlignment="Top" Width="132"                                         />
 
                     </Grid>
                 </PivotItem>
                 <PivotItem x:ConnectionId='12' Name="Classificacio" Header="Classificació">
                     <Grid>
-                        <ListView x:ConnectionId='27' x:Name="lvClassificacioGrups" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Height="632" VerticalContentAlignment="Stretch" Width="716" Margin="0,10">
+                        <ListView x:ConnectionId='28' x:Name="lvClassificacioGrups" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Height="632" VerticalContentAlignment="Stretch" Width="716" Margin="0,10">
                         </ListView>
                     </Grid>
                 </PivotItem>
                 <PivotItem x:ConnectionId='13' Name="Resultats" Header="Entrada de resultats">
                     <Grid>
-                        <ListView x:ConnectionId='14' x:Name="lvEntradaResultats" Background="LightGray" ItemTemplate="{StaticResource EnfrentamientoSimpleTemplate}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalContentAlignment="Stretch" Width="410" Margin="0,10,10,427"                                                       />
-                        <ListView x:ConnectionId='15' Background="LightGray" x:Name="lvGrupsTorneig"                                                    HorizontalAlignment="Left" ItemTemplate="{StaticResource GrupsSimpleTemplate}" Height="215" Margin="10,10,0,0" VerticalAlignment="Top" Width="263"/>
-                        <ComboBox x:ConnectionId='16' x:Name="cmbGuanyador" Margin="390,268,0,0" Width="326" />
-                        <TextBlock x:ConnectionId='17' x:Name="txbGuanyador" HorizontalAlignment="Left" Margin="294,273,0,0" TextWrapping="Wrap" Text="Guanyador" VerticalAlignment="Top" Width="79"/>
-                        <TextBlock x:ConnectionId='18' x:Name="txbCarambolesA" HorizontalAlignment="Left" Margin="294,310,0,0" TextWrapping="Wrap" Text="Caramboles A" VerticalAlignment="Top" Height="32"/>
-                        <TextBox x:ConnectionId='19' x:Name="txtCarambolesA" HorizontalAlignment="Left" Margin="390,305,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
-                        <TextBlock x:ConnectionId='20' x:Name="txbCarambolesB" HorizontalAlignment="Left" Margin="294,347,0,0" TextWrapping="Wrap" Text="Caramboles B" VerticalAlignment="Top" Height="32"/>
-                        <TextBox x:ConnectionId='21' x:Name="txtCarambolesB" HorizontalAlignment="Left" Margin="390,342,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
-                        <TextBlock x:ConnectionId='22' x:Name="txbEntrades" HorizontalAlignment="Left" Margin="294,384,0,0" TextWrapping="Wrap" Text="Entrades" VerticalAlignment="Top" Height="32"/>
-                        <TextBox x:ConnectionId='23' x:Name="txtEntrades" HorizontalAlignment="Left" Margin="390,379,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
-                        <TextBlock x:ConnectionId='24' x:Name="txbMotiu" HorizontalAlignment="Left" Margin="294,416,0,0" TextWrapping="Wrap" Text="Motiu victoria" VerticalAlignment="Top" Height="32"/>
-                        <ComboBox x:ConnectionId='25' x:Name="cmbMotiu" Margin="390,416,0,0" Width="326" />
-                        <Button x:ConnectionId='26' x:Name="btnActualitzarPartida" Content="Actualitzar partida" HorizontalAlignment="Left" Margin="363,488,0,0" VerticalAlignment="Top" Width="263"                                    />
+                        <ListView x:ConnectionId='15' x:Name="lvEntradaResultats" Background="LightGray" ItemTemplate="{StaticResource EnfrentamientoSimpleTemplate}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalContentAlignment="Stretch" Width="410" Margin="0,10,10,427"                                                       />
+                        <ListView x:ConnectionId='16' Background="LightGray" x:Name="lvGrupsTorneig"                                                    HorizontalAlignment="Left" ItemTemplate="{StaticResource GrupsSimpleTemplate}" Height="215" Margin="10,10,0,0" VerticalAlignment="Top" Width="263"/>
+                        <ComboBox x:ConnectionId='17' x:Name="cmbGuanyador" Margin="390,268,0,0" Width="326" />
+                        <TextBlock x:ConnectionId='18' x:Name="txbGuanyador" HorizontalAlignment="Left" Margin="294,273,0,0" TextWrapping="Wrap" Text="Guanyador" VerticalAlignment="Top" Width="79"/>
+                        <TextBlock x:ConnectionId='19' x:Name="txbCarambolesA" HorizontalAlignment="Left" Margin="294,310,0,0" TextWrapping="Wrap" Text="Caramboles A" VerticalAlignment="Top" Height="32"/>
+                        <TextBox x:ConnectionId='20' x:Name="txtCarambolesA" HorizontalAlignment="Left" Margin="390,305,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
+                        <TextBlock x:ConnectionId='21' x:Name="txbCarambolesB" HorizontalAlignment="Left" Margin="294,347,0,0" TextWrapping="Wrap" Text="Caramboles B" VerticalAlignment="Top" Height="32"/>
+                        <TextBox x:ConnectionId='22' x:Name="txtCarambolesB" HorizontalAlignment="Left" Margin="390,342,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
+                        <TextBlock x:ConnectionId='23' x:Name="txbEntrades" HorizontalAlignment="Left" Margin="294,384,0,0" TextWrapping="Wrap" Text="Entrades" VerticalAlignment="Top" Height="32"/>
+                        <TextBox x:ConnectionId='24' x:Name="txtEntrades" HorizontalAlignment="Left" Margin="390,379,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="176"/>
+                        <TextBlock x:ConnectionId='25' x:Name="txbMotiu" HorizontalAlignment="Left" Margin="294,416,0,0" TextWrapping="Wrap" Text="Motiu victoria" VerticalAlignment="Top" Height="32"/>
+                        <ComboBox x:ConnectionId='26' x:Name="cmbMotiu" Margin="390,416,0,0" Width="326" />
+                        <Button x:ConnectionId='27' x:Name="btnActualitzarPartida" Content="Actualitzar partida" HorizontalAlignment="Left" Margin="363,488,0,0" VerticalAlignment="Top" Width="263"                                    />
 
 
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Reports">
                     <Grid>
-
-
+                        <WebView x:ConnectionId='14' x:Name="webviewReports"                               />
                     </Grid>
                 </PivotItem>
             </Pivot>

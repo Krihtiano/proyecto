@@ -106,6 +106,14 @@ public class PersistenciaMySQL implements IBillar{
     public void addSoci(Soci s, Modalitat m, Float coeficient, Integer caramboles, Integer entrades) {
         try {
             em.getTransaction().begin();
+            //Modalitat m = pmysql.getModalitat("Lliure");
+            //Modalitat m2 = pmysql.getModalitat("A 1 banda");
+            //Modalitat m3 = pmysql.getModalitat("A 3 bandes");
+            //EstadisticaModalitat emod1 = new EstadisticaModalitat(s,m2,coeficient,caramboles,entrades);
+            //EstadisticaModalitat emod2 = new EstadisticaModalitat(s,m3,coeficient,caramboles,entrades);
+            //em.persist(emod2);
+            //em.persist(emod3);
+            
             EstadisticaModalitat emod = new EstadisticaModalitat(s,m,coeficient,caramboles,entrades);
             s.setPasswordHash(getHashFromPassowrd(s.getPasswordHash()));
             em.persist(s);
@@ -122,10 +130,15 @@ public class PersistenciaMySQL implements IBillar{
     public void removeSoci(int id) {
         try {
             em.getTransaction().begin();
-            ArrayList<Soci> socis = this.getSocis();
-            Soci s = socis.get(id-1);
-            s.setActiu(0);
-            em.merge(s);
+            Soci sociFinal = null;
+            ArrayList<Soci> socis = this.getSocisValids();
+            for(Soci ss : socis){
+               if (ss.getId() == id){
+                   sociFinal = ss;
+               } 
+            }
+            sociFinal.setActiu(0);
+            em.merge(sociFinal);
             em.getTransaction().commit();
         }
         catch (Exception ex) {

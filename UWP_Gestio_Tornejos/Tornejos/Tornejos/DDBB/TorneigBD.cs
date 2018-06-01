@@ -202,7 +202,7 @@ from inscrit i
 inner
 join partida on partida.inscrit_a = i.soci_id or partida.inscrit_b = i.soci_id
 
-where i.torneig_id = 3 and i.grup_num = 0
+where i.torneig_id = @idTorneig and i.grup_num = @numGrup
 group by i.soci_id
 order by guanyades desc";
 
@@ -216,6 +216,62 @@ order by guanyades desc";
                         Inscrit i;
 
                         Int32 guanyades = reader.GetInt32(reader.GetOrdinal("guanyades"));
+                        Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
+                        Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
+                        Int32 numG = -1;
+                        try
+                        {
+                            numG = reader.GetInt32(reader.GetOrdinal("grup_num"));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        data = reader.GetDateTime(reader.GetOrdinal("data"));
+
+                        Soci s = TorneigBD.selectSociPerId(idS);
+                        Torneig t = TorneigBD.selectTorneigPerId(idT);
+                        if (numG != -1)
+                        {
+                            Grup gr = TorneigBD.selectGrupDeUnTorneigIUnGrup(idT, numG);
+                            i = new Inscrit(s, t, gr, data);
+                            inscrits.Add(i);
+                        }
+                        else
+                        {
+                            i = new Inscrit(s, t, null, data);
+                            inscrits.Add(i);
+                        }
+                    }
+
+                }
+            }
+            return inscrits;
+        }
+
+        public static ObservableCollection<Inscrit> selectInscritsDeUnTorneigIGrupSimple(Int32 idTorneig, Grup g)
+        {
+            DateTime data;
+            ObservableCollection<Inscrit> inscrits = new ObservableCollection<Inscrit>();
+            //---------------------------------
+            using (MySqlConnection connexio = MySQL.GetConnexio())
+            {
+                connexio.Open();
+                using (MySqlCommand consulta = connexio.CreateCommand())
+                {
+
+
+                    consulta.CommandText = @"select * from inscrit where torneig_id = @idTorneig and grup_num = @numGrup";
+
+
+                    UtilsDB.AddParameter(consulta, "idTorneig", idTorneig, MySqlDbType.Int32);
+                    UtilsDB.AddParameter(consulta, "numGrup", g.Num, MySqlDbType.Int32);
+
+                    MySqlDataReader reader = consulta.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inscrit i;
+
                         Int32 idS = reader.GetInt32(reader.GetOrdinal("soci_id"));
                         Int32 idT = reader.GetInt32(reader.GetOrdinal("torneig_id"));
                         Int32 numG = -1;

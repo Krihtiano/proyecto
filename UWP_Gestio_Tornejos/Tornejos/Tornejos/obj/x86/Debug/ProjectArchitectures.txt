@@ -1,1 +1,1 @@
-C:\Users\Usuari\Desktop\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\Tornejos.csproj;x86
+C:\Users\Cristian\Desktop\Proyecto\UWP_Gestio_Tornejos\Tornejos\Tornejos\Tornejos.csproj;x86
