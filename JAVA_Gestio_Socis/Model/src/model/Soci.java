@@ -22,7 +22,11 @@ public class Soci implements Serializable{
     
     @Id
     @TableGenerator(name = "gen_soci",
+<<<<<<< HEAD
             initialValue=100,
+=======
+            initialValue = 100,
+>>>>>>> d1b35c8d5be8b5c75e21623d49495d6ec59ed8e3
             table = "COMPTADORS",
             pkColumnName = "CLAU",
             valueColumnName = "COMPTADOR",
