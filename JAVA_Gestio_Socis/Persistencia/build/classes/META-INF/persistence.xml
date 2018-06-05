@@ -10,7 +10,7 @@
             <property name="javax.persistence.jdbc.user" value="m2-clopez"/>
             <property name="javax.persistence.jdbc.password" value="47751177A"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>

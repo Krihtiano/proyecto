@@ -3,19 +3,20 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="ireport.jasperserver.reportUnit" value="/m2-clopez/Reports/InformacioDeSocis"/>
+	<property name="ireport.jasperserver.url" value="http://92.222.27.83:8080/jasperserver/services/repository"/>
 	<queryString>
 		<![CDATA[select 	s.nif,
 	s.nom,
 	s.cognom1,
 	s.cognom2,
 	t.nom as 'Nom torneig',
-	t.data_inici as 'Data inici'
+	t.data_inici as 'Data inici',
+	(select em.coeficient_base from estadistica_modalitat em where em.soci_id = s.id and em.modalitat_id = t.modalitat_id)
+
 from soci s
 left join inscrit i on s.id = i.soci_id
-left join torneig t on i.torneig_id = t.id
-
-
-]]>
+left join torneig t on i.torneig_id = t.id]]>
 	</queryString>
 	<field name="nif" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -31,6 +32,7 @@ left join torneig t on i.torneig_id = t.id
 	</field>
 	<field name="Nom torneig" class="java.lang.String"/>
 	<field name="Data inici" class="java.sql.Timestamp"/>
+	<field name="(select em.coeficient_base from estadistica_modalitat em where em.soci_id = s.id and em.modalitat_id = t.modalitat_id)" class="java.lang.Float"/>
 	<group name="GrupPerSocis" isStartNewPage="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{nif}]]></groupExpression>
 		<groupHeader>
@@ -73,10 +75,6 @@ left join torneig t on i.torneig_id = t.id
 				<line>
 					<reportElement uuid="8274fb04-eae9-40bf-a033-fd4a8c683073" x="2" y="276" width="553" height="1"/>
 				</line>
-				<image>
-					<reportElement uuid="b0aea299-59e2-4c64-a4d1-46e9118dc1e8" x="0" y="12" width="247" height="147"/>
-					<imageExpression><![CDATA["F:\\Proyecto\\UWP_Reports\\logo_billar.png"]]></imageExpression>
-				</image>
 				<staticText>
 					<reportElement uuid="f526c297-1a7f-4739-a861-f29eec76c09d" x="224" y="12" width="331" height="147"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -84,6 +82,24 @@ left join torneig t on i.torneig_id = t.id
 					</textElement>
 					<text><![CDATA[Informació de Socis]]></text>
 				</staticText>
+				<staticText>
+					<reportElement uuid="c5a6f535-136a-4024-b086-9c2ae51d6723" x="2" y="223" width="69" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Coeficient]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="0bc432a3-1ff0-444b-aa07-53e9deab8da3" x="87" y="223" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{(select em.coeficient_base from estadistica_modalitat em where em.soci_id = s.id and em.modalitat_id = t.modalitat_id)}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement uuid="865794d0-9267-4aee-9fd4-f51020b5ed5b" x="2" y="12" width="248" height="147"/>
+					<imageExpression><![CDATA["repo:logo_billar.png"]]></imageExpression>
+				</image>
 			</band>
 		</groupHeader>
 	</group>
@@ -93,27 +109,22 @@ left join torneig t on i.torneig_id = t.id
 	<detail>
 		<band height="63" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="1b3551f8-fec0-4356-a1f1-15dcf5d5db52" x="69" y="0" width="100" height="20"/>
+				<reportElement uuid="1b3551f8-fec0-4356-a1f1-15dcf5d5db52" x="83" y="10" width="100" height="20"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Nom torneig]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="095fe377-80a2-4687-91be-94de41085628" x="194" y="0" width="223" height="20"/>
+				<reportElement uuid="095fe377-80a2-4687-91be-94de41085628" x="208" y="10" width="223" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Nom torneig}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5d2c1b3b-d88c-4bcb-82af-ca182151c472" x="69" y="40" width="100" height="20"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[Posició]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="b8480c8c-ff23-4b21-a222-741d6334efb0" x="69" y="20" width="100" height="20"/>
+				<reportElement uuid="b8480c8c-ff23-4b21-a222-741d6334efb0" x="83" y="30" width="100" height="20"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Data inici]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="27adb1c4-3353-4732-ae2a-2c23d73b5e0d" x="194" y="20" width="223" height="20"/>
+				<reportElement uuid="27adb1c4-3353-4732-ae2a-2c23d73b5e0d" x="208" y="30" width="223" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Data inici}]]></textFieldExpression>
 			</textField>

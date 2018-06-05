@@ -19,18 +19,17 @@ public class BillarPersistence {
     }
     
     static public IBillar getInstance(String nomClasseComponent, String parametrePelConstructorDelComponent) throws BillarException {
-        IBillar obj = null;
+        IBillar obj;
         try {
             Class c = Class.forName(nomClasseComponent);
-            if (parametrePelConstructorDelComponent==null ||
-                    parametrePelConstructorDelComponent.length()==0) {
+            if (parametrePelConstructorDelComponent==null || parametrePelConstructorDelComponent.length()==0) {
                 obj = (IBillar) c.newInstance();
             } else {
                 Constructor co = c.getConstructor(String.class);
                 obj = (IBillar) co.newInstance(parametrePelConstructorDelComponent);
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new BillarException("Error " + nomClasseComponent, ex);
+            throw new BillarException("Error al carregar el component: " + nomClasseComponent, ex);
         }
         return obj;
     }

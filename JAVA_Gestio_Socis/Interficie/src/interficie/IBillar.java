@@ -58,5 +58,17 @@ public interface IBillar {
     //Modifica una estadistica de modalitat passant per parametre aquesta.
     public void editarEM(EstadisticaModalitat emod);
    
+    //Retorna una llista amb els Socis esborrats o inactius
+    public ArrayList<Soci> getSocisInactius();
+    
+    //Posa a actiu un Soci (El torna a recuperar de la llista de esborrats)
+    public void setSociActiu(Soci s);
+    
+    //Comprova que el dni no es repeteixi amb els socis de la BD
+    public int comprovacioDni(String dni);
+    
+    //Comprova que el dni no es repeteixi amb els socis de la BD passant també el propi dni per a editar i que no peti.
+    public int comprovacioDni(String dni, String dniEditando);
+        
 
 }

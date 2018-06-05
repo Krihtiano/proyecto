@@ -36,8 +36,8 @@ public class PersistenciaMySQL implements IBillar{
         try {
             emf = Persistence.createEntityManagerFactory(nomUnitatPersistencia);
             System.out.println("Capa de persistencia creada");
-        } catch (PersistenceException ex) {
-            throw new BillarException("Problemes en crear l'EntityManagerFactory", ex);
+        } catch (Exception ex) {
+            throw new BillarException("Problemes en crear l'EntityManagerFactory" + ex.getMessage());
         }
         try {
             em = emf.createEntityManager();
@@ -106,18 +106,20 @@ public class PersistenciaMySQL implements IBillar{
     public void addSoci(Soci s, Modalitat m, Float coeficient, Integer caramboles, Integer entrades) {
         try {
             em.getTransaction().begin();
-            //Modalitat m = pmysql.getModalitat("Lliure");
-            //Modalitat m2 = pmysql.getModalitat("A 1 banda");
-            //Modalitat m3 = pmysql.getModalitat("A 3 bandes");
-            //EstadisticaModalitat emod1 = new EstadisticaModalitat(s,m2,coeficient,caramboles,entrades);
-            //EstadisticaModalitat emod2 = new EstadisticaModalitat(s,m3,coeficient,caramboles,entrades);
-            //em.persist(emod2);
-            //em.persist(emod3);
             
+            Modalitat mod1 = this.getModalitat("Lliure");
+            Modalitat mod2 = this.getModalitat("A 1 banda");
+            Modalitat mod3 = this.getModalitat("A 3 bandes");
+            
+            EstadisticaModalitat emod2 = new EstadisticaModalitat(s,mod2,coeficient,caramboles,entrades);
+            EstadisticaModalitat emod3 = new EstadisticaModalitat(s,mod3,coeficient,caramboles,entrades);
             EstadisticaModalitat emod = new EstadisticaModalitat(s,m,coeficient,caramboles,entrades);
+            
             s.setPasswordHash(getHashFromPassowrd(s.getPasswordHash()));
             em.persist(s);
             em.persist(emod);
+            em.persist(emod2);
+            em.persist(emod3);
             em.getTransaction().commit();
             System.out.println(s);
            
@@ -222,5 +224,56 @@ public class PersistenciaMySQL implements IBillar{
         catch (Exception ex) {
             throw new BillarException("Problemes en editar una estadística"+  ex.getMessage());
         } 
+    }
+
+    @Override
+    public ArrayList<Soci> getSocisInactius() {
+        ArrayList<Soci> socis = new ArrayList<Soci>();
+        String consulta = "select s from Soci s where actiu = 0";
+        Query qs = em.createQuery(consulta);
+        List<Soci> ls = qs.getResultList();
+        socis.addAll(ls);
+        return socis;   
+    }
+
+    @Override
+    public void setSociActiu(Soci s) {
+        try {
+            em.getTransaction().begin();
+            s.setActiu(1);
+            em.merge(s);
+            em.getTransaction().commit();
+        }
+        catch (Exception ex) {
+            throw new BillarException("Problemes en reinsertar un Soci"+  ex.getMessage());
+        } 
+    }
+
+    @Override
+    public int comprovacioDni(String dni) {
+        ArrayList<Soci> dnis = new ArrayList<Soci>();
+        String consulta = "select nif from Soci";
+        Query qs = em.createQuery(consulta);
+        List<String> ls = qs.getResultList();
+        for(String dn : ls){
+            if(dn.equals(dni)){
+                return 1;
+            }
+        }
+        return 0;
+    }
+    
+    @Override
+    public int comprovacioDni(String dni, String dniEditando) {
+        ArrayList<Soci> dnis = new ArrayList<Soci>();
+        String consulta = "select nif from Soci";
+        Query qs = em.createQuery(consulta);
+        List<String> ls = qs.getResultList();
+        for(String dn : ls){
+            if(dn.equals(dni) && (!(dn.equals(dniEditando)))){
+                return 1;
+            }
+        }
+        return 0;
     }
 }

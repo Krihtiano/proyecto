@@ -1,0 +1,3 @@
+url=jdbc:mysql://92.222.27.83:3306/m2_clopez?zeroDateTimeBehavior=convertToNull
+user=m2-clopez
+password=47751177A
